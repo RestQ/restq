@@ -13,18 +13,18 @@ import org.restq.core.cluster.impl.MemberImpl;
  * @author ganeshs
  *
  */
-public class JoinRequest extends Request {
+public class UnjoinRequest extends Request {
 
 	private Member member;
 	
-	public JoinRequest() {
+	public UnjoinRequest() {
 		member = new MemberImpl();
 	}
 	
 	/**
 	 * @param member
 	 */
-	public JoinRequest(Member member) {
+	public UnjoinRequest(Member member) {
 		this.member = member;
 	}
 	
@@ -75,7 +75,7 @@ public class JoinRequest extends Request {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		JoinRequest other = (JoinRequest) obj;
+		UnjoinRequest other = (UnjoinRequest) obj;
 		if (member == null) {
 			if (other.member != null)
 				return false;

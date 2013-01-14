@@ -28,13 +28,23 @@ public class ClusterManager {
 		return new JoinResponse(cluster.getMembers(), cluster.getMaster());
 	}
 	
-	public JoinResponse unjoin(JoinRequest request) {
+	public JoinResponse unjoin(UnjoinRequest request) {
 		cluster.unjoin(request.getMember());
 		return new JoinResponse(cluster.getMembers(), cluster.getMaster());
 	}
 	
 	public Cluster getCluster() {
 		return cluster;
+	}
+	
+	public boolean updateMaster(MasterInfo info) {
+		logger.info("Updating the cluster with the master info - " + info);
+		if (cluster.getMaster() != null) {
+			logger.info("Master already set. Rejecting the update - " +  info);
+			return false;
+		}
+		cluster.setMaster(info.getMaster());
+		return true;
 	}
 	
 	public void updateCluster(JoinResponse response) {

@@ -18,9 +18,19 @@ import org.restq.core.cluster.nio.Serializer;
  */
 public class RequestDecoder extends FrameDecoder {
 	
+	private Serializer serializer;
+	
+	public RequestDecoder() {
+		this(new Serializer());
+	}
+	
+	public RequestDecoder(Serializer serializer) {
+		this.serializer = serializer;
+	}
+	
 	@Override
 	protected Object decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer) throws Exception {
 		DataInput dataInput = new ChannelBufferInputStream(buffer);
-		return Serializer.instance().deserialize(dataInput);
+		return serializer.deserialize(dataInput);
 	}
 }

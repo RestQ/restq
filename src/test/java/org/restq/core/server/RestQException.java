@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.restq.core.server;
+package org.restq.core.server;
 
 /**
  * @author ganeshs

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.restq.core.cluster.nio;
+package org.restq.core.cluster.nio;
 
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -14,12 +14,12 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
+import org.restq.core.DummyException;
 import org.restq.core.cluster.nio.DataSerializable;
 import org.restq.core.cluster.nio.Serializer;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.restq.core.DummyException;
 
 /**
  * @author ganeshs

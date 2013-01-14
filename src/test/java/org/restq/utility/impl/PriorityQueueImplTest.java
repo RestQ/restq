@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.restq.utility.impl;
+package org.restq.utility.impl;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertFalse;
@@ -12,12 +12,12 @@ import java.io.Serializable;
 import java.util.Iterator;
 
 import org.restq.core.server.Identifiable;
+import org.restq.core.server.RestQException;
 import org.restq.utility.PriorityQueue;
 import org.restq.utility.impl.PriorityQueueImpl;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.restq.core.server.RestQException;
 
 /**
  * @author ganeshs

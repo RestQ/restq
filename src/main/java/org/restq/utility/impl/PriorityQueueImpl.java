@@ -11,9 +11,9 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import org.restq.core.server.Identifiable;
+import org.restq.core.server.RestQException;
 import org.restq.utility.PriorityQueue;
 
-import com.restq.core.server.RestQException;
 
 /**
  * @author ganeshs

@@ -67,7 +67,10 @@ public class JoinResponse extends Response {
 		for (Member member : members) {
 			member.writeData(output);
 		}
-		master.writeData(output);
+		output.writeBoolean(master != null);
+		if (master != null) {
+			master.writeData(output);
+		}
 	}
 
 	@Override
@@ -79,12 +82,45 @@ public class JoinResponse extends Response {
 			member.readData(input);
 			members.add(member);
 		}
-		master = new MemberImpl();
-		master.readData(input);
+		if (input.readBoolean()) {
+			master = new MemberImpl();
+			master.readData(input);
+		}
 	}
 
 	@Override
 	public String toString() {
 		return "JoinResponse [members=" + members + ", master=" + master + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((master == null) ? 0 : master.hashCode());
+		result = prime * result + ((members == null) ? 0 : members.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		JoinResponse other = (JoinResponse) obj;
+		if (master == null) {
+			if (other.master != null)
+				return false;
+		} else if (!master.equals(other.master))
+			return false;
+		if (members == null) {
+			if (other.members != null)
+				return false;
+		} else if (!members.equals(other.members))
+			return false;
+		return true;
 	}
 }

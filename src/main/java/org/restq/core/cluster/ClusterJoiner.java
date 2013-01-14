@@ -10,4 +10,8 @@ package org.restq.core.cluster;
 public interface ClusterJoiner {
 
 	void join(Node node);
+	
+	void joinAsMaster(Node node);
+	
+	void unjoin(Node node);
 }

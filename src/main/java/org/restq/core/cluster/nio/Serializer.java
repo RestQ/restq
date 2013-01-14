@@ -7,7 +7,8 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import com.restq.core.server.RestQException;
+import org.restq.core.server.RestQException;
+
 
 /**
  * @author ganeshs
@@ -15,12 +16,6 @@ import com.restq.core.server.RestQException;
  */
 public class Serializer {
 	
-	private static Serializer serializer = new Serializer();
-	
-	public static Serializer instance() {
-		return serializer;
-	}
-
 	public void serialize(DataOutput output, DataSerializable serializable) throws IOException {
 		output.writeUTF(serializable.getClass().getName());
 		serializable.writeData(output);

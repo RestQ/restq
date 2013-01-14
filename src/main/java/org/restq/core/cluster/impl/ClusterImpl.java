@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
 import org.restq.core.cluster.Cluster;
 import org.restq.core.cluster.Member;
 import org.restq.core.cluster.MembershipListener;
@@ -21,25 +22,41 @@ public class ClusterImpl implements Cluster {
 	
 	private Set<MembershipListener> membershipListeners = new HashSet<MembershipListener>();
 	
-	private Member thisMember;
-	
 	private Member master;
 	
-	public ClusterImpl(Member thisMember) {
-		this.thisMember = thisMember;
+	private Logger logger = Logger.getLogger(ClusterImpl.class);
+	
+	public ClusterImpl() {
 	}
 
 	@Override
 	public void join(Member member) {
 		if (members.contains(member)) {
+			logger.info("Member - " + member + " already exists in the cluster");
 			return;
 		}
-		addMember(member);
+		if (members.isEmpty()) {
+			setMaster(member);
+		}
+		members.add(member);
+		for(MembershipListener listener : membershipListeners) {
+			listener.memberAdded(this, member);
+		}
 	}
 
 	@Override
 	public void unjoin(Member member) {
-		removeMember(member);
+		members.remove(member);
+		if (member.equals(master)) {
+			if (!members.isEmpty()) {
+				setMaster(members.iterator().next());
+			} else {
+				setMaster(null);
+			}
+		}
+		for(MembershipListener listener : membershipListeners) {
+			listener.memberRemoved(this, member);
+		}
 	}
 
 	@Override
@@ -57,37 +74,6 @@ public class ClusterImpl implements Cluster {
 		return Collections.unmodifiableSet(members);
 	}
 	
-	public void addMember(Member member) {
-		if (members.isEmpty()) {
-			setMaster(member);
-		}
-		members.add(member);
-		for(MembershipListener listener : membershipListeners) {
-			listener.memberAdded(this, member);
-		}
-	}
-	
-	public void removeMember(Member member) {
-		members.remove(member);
-		for(MembershipListener listener : membershipListeners) {
-			listener.memberRemoved(this, member);
-		}
-	}
-
-	/**
-	 * @return the thisMember
-	 */
-	public Member getThisMember() {
-		return thisMember;
-	}
-
-	/**
-	 * @param thisMember the thisMember to set
-	 */
-	public void setThisMember(Member thisMember) {
-		this.thisMember = thisMember;
-	}
-
 	/**
 	 * @return the master
 	 */
@@ -99,10 +85,13 @@ public class ClusterImpl implements Cluster {
 	 * @param master the master to set
 	 */
 	public void setMaster(Member master) {
+		if (master != null && ! members.contains(master)) {
+			members.add(master);
+		}
 		this.master = master;
 	}
 	
 	public void setMembers(Set<Member> members) {
-		
+		this.members = members;
 	}
 }
