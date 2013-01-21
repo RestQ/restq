@@ -15,9 +15,9 @@ public interface Cluster {
 	
 	void setMaster(Member master);
 
-	void join(Member node);
+	boolean join(Member node);
 	
-	void unjoin(Member node);
+	boolean unjoin(Member node);
 	
 	void addMembershipListener(MembershipListener nodeListener);
 	

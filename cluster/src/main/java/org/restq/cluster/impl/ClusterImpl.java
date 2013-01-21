@@ -3,7 +3,6 @@
  */
 package org.restq.cluster.impl;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -11,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.restq.cluster.Cluster;
 import org.restq.cluster.Member;
 import org.restq.cluster.MembershipListener;
+import org.restq.cluster.Partition;
 
 /**
  * @author ganeshs
@@ -28,32 +28,40 @@ public class ClusterImpl implements Cluster {
 	
 	public ClusterImpl() {
 	}
-
+	
 	@Override
-	public void join(Member member) {
-		if (members.contains(member)) {
-			logger.info("Member - " + member + " already exists in the cluster");
-			return;
+	public boolean join(Member member) {
+		synchronized (members) {
+			if (members.contains(member)) {
+				logger.info("Member - " + member + " already exists in the cluster");
+				return false;
+			}
+			members.add(member);
 		}
-		members.add(member);
 		for(MembershipListener listener : membershipListeners) {
 			listener.memberAdded(this, member);
 		}
+		return true;
 	}
 
 	@Override
-	public void unjoin(Member member) {
-		members.remove(member);
-		if (member.equals(master)) {
-			if (!members.isEmpty()) {
-				setMaster(members.iterator().next());
-			} else {
-				setMaster(null);
+	public boolean unjoin(Member member) {
+		synchronized (members) {
+			for (Partition partition : member.getPartitions()) {
+				members.remove(partition);
+			}
+			if (member.equals(master)) {
+				if (!members.isEmpty()) {
+					// TODO announce the current node as master?? or conduct an election again
+				} else {
+					setMaster(null);
+				}
 			}
 		}
 		for(MembershipListener listener : membershipListeners) {
 			listener.memberRemoved(this, member);
 		}
+		return true;
 	}
 
 	@Override
@@ -68,7 +76,7 @@ public class ClusterImpl implements Cluster {
 	
 	@Override
 	public Set<Member> getMembers() {
-		return Collections.unmodifiableSet(members);
+		return members;
 	}
 	
 	/**
@@ -82,10 +90,12 @@ public class ClusterImpl implements Cluster {
 	 * @param master the master to set
 	 */
 	public void setMaster(Member master) {
-		if (master != null && ! members.contains(master)) {
-			members.add(master);
+		synchronized (members) {
+			if (master != null && ! members.contains(master)) {
+				members.add(master);
+			}
+			this.master = master;
 		}
-		this.master = master;
 	}
 	
 	public void setMembers(Set<Member> members) {

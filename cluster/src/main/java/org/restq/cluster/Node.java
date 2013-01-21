@@ -14,7 +14,6 @@ import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.jboss.netty.handler.execution.ExecutionHandler;
-import org.restq.cluster.impl.ClusterImpl;
 import org.restq.cluster.impl.MemberImpl;
 import org.restq.cluster.nio.Serializer;
 import org.restq.cluster.pipeline.ClusterPipelineFactory;
@@ -43,6 +42,7 @@ public class Node {
 	
 	private Member member;
 	
+	@Autowired
 	private Cluster cluster;
 	
 	@Autowired
@@ -83,7 +83,6 @@ public class Node {
 	
 	public void init() {
 		member = new MemberImpl(id, new InetSocketAddress(port));
-		cluster = new ClusterImpl();
 		bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory());
 		RequestHandler handler = new RequestHandler(serializer, requestMapper, messageObservers, preProcessors, postProcessors);
 		ClusterPipelineFactory pipelineFactory = new ClusterPipelineFactory();

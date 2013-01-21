@@ -8,6 +8,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,6 +26,8 @@ public class MemberImpl implements Member {
 	private Set<Partition> partitions = new HashSet<Partition>();
 	
 	private InetSocketAddress address;
+	
+	private Set<Member> slaves = new HashSet<Member>();
 	
 	/**
 	 * 
@@ -93,7 +96,32 @@ public class MemberImpl implements Member {
 	 * @return the partitions
 	 */
 	public Set<Partition> getPartitions() {
-		return partitions;
+		return Collections.unmodifiableSet(partitions);
+	}
+	
+	@Override
+	public void assignPartition(Partition partition) {
+		this.partitions.add(partition);
+	}
+	
+	@Override
+	public void unassignPartition(Partition partition) {
+		this.partitions.remove(partition);
+	}
+	
+	@Override
+	public void addSlave(Member slave) {
+		this.slaves.add(slave);
+	}
+	
+	@Override
+	public void removeSlave(Member slave) {
+		this.slaves.remove(slave);
+	}
+	
+	@Override
+	public Set<Member> getSlaves() {
+		return slaves;
 	}
 
 	@Override
@@ -123,7 +151,7 @@ public class MemberImpl implements Member {
 
 	@Override
 	public String toString() {
-		return "MemberImpl [id=" + id + ", partitions =" + partitions + ", address=" + address + "]";
+		return "MemberImpl [id=" + id + ", partitions=" + partitions + ", address=" + address + ", slaveCount=" + slaves.size() + "]";
 	}
 
 }

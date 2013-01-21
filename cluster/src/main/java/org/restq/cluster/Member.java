@@ -19,4 +19,14 @@ public interface Member extends DataSerializable {
 	InetSocketAddress getAddress();
 	
 	Set<Partition> getPartitions();
+	
+	void assignPartition(Partition partition);
+	
+	void unassignPartition(Partition partition);
+	
+	Set<Member> getSlaves();
+	
+	void addSlave(Member slave);
+	
+	void removeSlave(Member slave);
 }

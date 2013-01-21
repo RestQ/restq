@@ -32,11 +32,17 @@
 		<property name="group" value="${multicast_group}"/>
 	</bean>
 	
+	<bean name="cluster" class="org.restq.cluster.impl.ClusterImpl"/>
+	
+	<bean name="partitionAssignmentStrategy" class="org.restq.cluster.impl.SimplePartitionAssignmentStrategy"/>
+	
+	<bean name="slaveAssignmentStrategy" class="org.restq.cluster.impl.SimpleSlaveAssignmentStrategy"/>
+	
 	<bean name="clusterJoiner" class="org.restq.cluster.service.impl.MulticastClusterJoiner"/>
 	
 	<bean name="connectionManager" class="org.restq.cluster.nio.impl.ConnectionManagerImpl"/>
 	
-	<bean name="clusterService" class="org.restq.cluster.service.impl.ClusterServiceImpl"/>
+	<bean name="clusterService" class="org.restq.cluster.service.impl.ClusterServiceImpl" init-method="init"/>
 	
 	<beans profile="test">
 		<context:property-placeholder location="restq.test.properties" order="0"/>
