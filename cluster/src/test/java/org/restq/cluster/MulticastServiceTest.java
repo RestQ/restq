@@ -26,7 +26,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.restq.cluster.impl.MemberImpl;
-import org.restq.cluster.nio.Serializer;
+import org.restq.core.Serializer;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

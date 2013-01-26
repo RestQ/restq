@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.restq.cluster.impl.MemberImpl;
+import org.restq.core.Response;
 
 /**
  * @author ganeshs

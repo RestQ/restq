@@ -21,14 +21,14 @@ import org.jboss.netty.channel.ChannelPipeline;
 import org.jboss.netty.channel.ChannelPipelineFactory;
 import org.jboss.netty.channel.Channels;
 import org.jboss.netty.channel.socket.nio.NioClientSocketChannelFactory;
-import org.restq.cluster.Request;
 import org.restq.cluster.impl.MemberImpl;
 import org.restq.cluster.nio.Connection;
 import org.restq.cluster.nio.ResponseFuture;
-import org.restq.cluster.nio.Serializer;
 import org.restq.cluster.pipeline.DataDecoder;
 import org.restq.cluster.pipeline.ResponseHandler;
+import org.restq.core.Request;
 import org.restq.core.RestQException;
+import org.restq.core.Serializer;
 
 
 /**

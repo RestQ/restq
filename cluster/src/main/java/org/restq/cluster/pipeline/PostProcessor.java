@@ -3,8 +3,8 @@
  */
 package org.restq.cluster.pipeline;
 
-import org.restq.cluster.Request;
-import org.restq.cluster.Response;
+import org.restq.core.Request;
+import org.restq.core.Response;
 
 /**
  * @author ganeshs

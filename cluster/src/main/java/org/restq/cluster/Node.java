@@ -15,7 +15,6 @@ import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.socket.nio.NioServerSocketChannelFactory;
 import org.jboss.netty.handler.execution.ExecutionHandler;
 import org.restq.cluster.impl.MemberImpl;
-import org.restq.cluster.nio.Serializer;
 import org.restq.cluster.pipeline.ClusterPipelineFactory;
 import org.restq.cluster.pipeline.DataDecoder;
 import org.restq.cluster.pipeline.MessageObserver;
@@ -24,7 +23,9 @@ import org.restq.cluster.pipeline.PostProcessor;
 import org.restq.cluster.pipeline.PreProcessor;
 import org.restq.cluster.pipeline.RequestHandler;
 import org.restq.cluster.service.ClusterJoiner;
+import org.restq.core.Request;
 import org.restq.core.RestQException;
+import org.restq.core.Serializer;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 

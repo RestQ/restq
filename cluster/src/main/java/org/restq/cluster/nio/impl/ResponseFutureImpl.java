@@ -6,9 +6,9 @@ package org.restq.cluster.nio.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.restq.cluster.Response;
 import org.restq.cluster.nio.ResponseFuture;
 import org.restq.cluster.nio.ResponseFutureListener;
+import org.restq.core.Response;
 
 /**
  * @author ganeshs

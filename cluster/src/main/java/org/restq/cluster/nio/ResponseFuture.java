@@ -3,7 +3,7 @@
  */
 package org.restq.cluster.nio;
 
-import org.restq.cluster.Response;
+import org.restq.core.Response;
 
 /**
  * @author ganeshs

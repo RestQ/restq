@@ -36,6 +36,14 @@ define "restq" do
 	  package :jar
   end
   
+  desc "Messaging code"
+  define "messaging" do
+	  compile.with REST_EXPRESS, SLF4J, SPRING, GSON, project('journal'), project('core')
+    test.using :testng
+    test.with MOCKITO
+	  package :jar
+  end
+  
   desc "Cluster code"
   define "cluster" do
 	  compile.with REST_EXPRESS, SLF4J, SPRING, GSON, project('core')
@@ -44,9 +52,17 @@ define "restq" do
 	  package :jar
   end
   
+  desc "Journal code"
+  define "journal" do
+	  compile.with REST_EXPRESS, SLF4J, SPRING, GSON, project('core')
+    test.using :testng
+    test.with MOCKITO
+	  package :jar
+  end
+  
   desc "Server code"
   define "server" do
-	  compile.with REST_EXPRESS, SLF4J, SPRING, GSON, project('cluster'), project('core')
+	  compile.with REST_EXPRESS, SLF4J, SPRING, GSON, project('cluster'), project('core'), project('messaging')
     test.using :testng
     test.with MOCKITO
 	  package :jar

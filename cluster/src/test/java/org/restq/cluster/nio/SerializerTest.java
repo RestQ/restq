@@ -16,6 +16,7 @@ import java.io.IOException;
 
 import org.restq.cluster.DummyException;
 import org.restq.core.DataSerializable;
+import org.restq.core.Serializer;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

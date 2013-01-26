@@ -19,9 +19,9 @@ import java.net.InetSocketAddress;
 import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
-import org.restq.cluster.Request;
-import org.restq.cluster.nio.Serializer;
+import org.restq.core.Request;
 import org.restq.core.RestQException;
+import org.restq.core.Serializer;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 

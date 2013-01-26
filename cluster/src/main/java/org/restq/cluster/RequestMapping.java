@@ -5,6 +5,8 @@ package org.restq.cluster;
 
 import java.lang.reflect.Method;
 
+import org.restq.core.Request;
+import org.restq.core.Response;
 import org.restq.core.RestQException;
 
 /**

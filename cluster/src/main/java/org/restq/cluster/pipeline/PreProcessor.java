@@ -3,7 +3,7 @@
  */
 package org.restq.cluster.pipeline;
 
-import org.restq.cluster.Request;
+import org.restq.core.Request;
 
 /**
  * @author ganeshs

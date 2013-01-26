@@ -8,6 +8,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 import org.restq.cluster.impl.MemberImpl;
+import org.restq.core.Request;
 
 /**
  * @author ganeshs

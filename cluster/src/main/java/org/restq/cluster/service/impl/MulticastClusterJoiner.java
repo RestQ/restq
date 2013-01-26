@@ -9,14 +9,14 @@ import org.restq.cluster.JoinRequest;
 import org.restq.cluster.JoinResponse;
 import org.restq.cluster.Member;
 import org.restq.cluster.Node;
-import org.restq.cluster.Response;
-import org.restq.cluster.Response.Status;
 import org.restq.cluster.UnjoinRequest;
 import org.restq.cluster.nio.Connection;
 import org.restq.cluster.nio.ConnectionManager;
 import org.restq.cluster.service.ClusterJoiner;
 import org.restq.cluster.service.ClusterService;
 import org.restq.cluster.service.MulticastService;
+import org.restq.core.Response;
+import org.restq.core.Response.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 
 

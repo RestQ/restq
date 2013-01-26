@@ -13,11 +13,11 @@ import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ExceptionEvent;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
-import org.restq.cluster.Request;
 import org.restq.cluster.RequestMapper;
-import org.restq.cluster.Response;
-import org.restq.cluster.Response.Status;
-import org.restq.cluster.nio.Serializer;
+import org.restq.core.Request;
+import org.restq.core.Response;
+import org.restq.core.Serializer;
+import org.restq.core.Response.Status;
 
 /**
  * @author ganeshs

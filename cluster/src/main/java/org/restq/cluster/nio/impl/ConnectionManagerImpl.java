@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import org.restq.cluster.Member;
 import org.restq.cluster.nio.Connection;
 import org.restq.cluster.nio.ConnectionManager;
-import org.restq.cluster.nio.Serializer;
+import org.restq.core.Serializer;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**

@@ -10,7 +10,7 @@ import org.jboss.netty.buffer.ChannelBufferInputStream;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.frame.FrameDecoder;
-import org.restq.cluster.nio.Serializer;
+import org.restq.core.Serializer;
 
 /**
  * @author ganeshs

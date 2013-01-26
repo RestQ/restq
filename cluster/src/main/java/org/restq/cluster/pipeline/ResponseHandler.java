@@ -6,8 +6,8 @@ package org.restq.cluster.pipeline;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelHandler;
-import org.restq.cluster.Response;
 import org.restq.cluster.nio.impl.ResponseFutureImpl;
+import org.restq.core.Response;
 
 /**
  * @author ganeshs
