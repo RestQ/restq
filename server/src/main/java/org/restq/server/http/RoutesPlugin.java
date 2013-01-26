@@ -4,7 +4,7 @@
 package org.restq.server.http;
 
 import org.jboss.netty.handler.codec.http.HttpMethod;
-import org.restq.core.controller.MessageController;
+import org.restq.server.http.controller.MessageController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

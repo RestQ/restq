@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testng-results skipped="0" failed="0" total="1" passed="1">
+  <reporter-output>
+  </reporter-output>
+  <suite name="Default suite" duration-ms="477" started-at="2013-01-24T23:13:57Z" finished-at="2013-01-24T23:13:57Z">
+    <groups>
+    </groups>
+    <test name="Default test" duration-ms="477" started-at="2013-01-24T23:13:57Z" finished-at="2013-01-24T23:13:57Z">
+      <class name="org.restq.journal.impl.JournalImplTest">
+        <test-method status="PASS" signature="beforeClass()[pri:0, instance:org.restq.journal.impl.JournalImplTest@71846ce0]" name="beforeClass" is-config="true" duration-ms="16" started-at="2013-01-24T23:13:57Z" finished-at="2013-01-24T23:13:57Z">
+        </test-method>
+        <test-method status="PASS" signature="setup()[pri:0, instance:org.restq.journal.impl.JournalImplTest@71846ce0]" name="setup" is-config="true" duration-ms="2" started-at="2013-01-24T23:13:57Z" finished-at="2013-01-24T23:13:57Z">
+        </test-method>
+        <test-method status="PASS" signature="shouldReceiveCallBackOnReadRecords()[pri:0, instance:org.restq.journal.impl.JournalImplTest@71846ce0]" name="shouldReceiveCallBackOnReadRecords" duration-ms="424" started-at="2013-01-24T23:13:57Z" finished-at="2013-01-24T23:13:57Z">
+        </test-method>
+        <test-method status="PASS" signature="teardown()[pri:0, instance:org.restq.journal.impl.JournalImplTest@71846ce0]" name="teardown" is-config="true" duration-ms="1" started-at="2013-01-24T23:13:57Z" finished-at="2013-01-24T23:13:57Z">
+        </test-method>
+        <test-method status="PASS" signature="afterClass()[pri:0, instance:org.restq.journal.impl.JournalImplTest@71846ce0]" name="afterClass" is-config="true" duration-ms="4" started-at="2013-01-24T23:13:57Z" finished-at="2013-01-24T23:13:57Z">
+        </test-method>
+      </class>
+    </test>
+  </suite>
+</testng-results>

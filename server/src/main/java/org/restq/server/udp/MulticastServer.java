@@ -14,11 +14,11 @@ import java.net.InetSocketAddress;
 import java.net.MulticastSocket;
 
 import org.apache.log4j.Logger;
-import org.restq.cluster.nio.Serializer;
 import org.restq.cluster.service.MulticastService;
 import org.restq.core.DataSerializable;
 import org.restq.core.RestQComponent;
 import org.restq.core.RestQException;
+import org.restq.core.Serializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

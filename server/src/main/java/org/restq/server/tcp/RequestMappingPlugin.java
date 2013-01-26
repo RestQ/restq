@@ -5,8 +5,8 @@ package org.restq.server.tcp;
 
 import org.restq.cluster.JoinRequest;
 import org.restq.cluster.Node;
-import org.restq.cluster.controller.ClusterController;
 import org.restq.cluster.pipeline.Plugin;
+import org.restq.server.tcp.controller.ClusterController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
