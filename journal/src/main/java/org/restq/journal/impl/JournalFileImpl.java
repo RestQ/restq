@@ -3,6 +3,8 @@
  */
 package org.restq.journal.impl;
 
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.concurrent.atomic.AtomicLong;
@@ -107,7 +109,7 @@ public class JournalFileImpl implements JournalFile {
 	}
 	
 	public void resetReadPosition() {
-		readPos.set(0);
+		readPos.set(HEADER_SIZE);
 	}
 	
 	public void close() {
@@ -115,6 +117,37 @@ public class JournalFileImpl implements JournalFile {
 			file.close();
 		} catch (IOException e) {
 			throw new RestQException(e);
+		}
+	}
+	
+	@Override
+	public void readData(DataInput input) throws IOException {
+		file.setLength(0);
+		writeHeader();
+		resetReadPosition();
+		long size = input.readLong();
+		copyBytes(size, input, file);
+	}
+
+	@Override
+	public void writeData(DataOutput output) throws IOException {
+		long size = getSize() - HEADER_SIZE;
+		output.writeLong(size);
+		file.seek(HEADER_SIZE);
+		copyBytes(size, file, output);
+	}
+	
+	private void copyBytes(long size, DataInput input, DataOutput output) throws IOException {
+		long bufferCount = size / 1024;
+		byte[] bytes = new byte[1024];
+		for (int i = 0; i < bufferCount; i++) {
+			input.readFully(bytes);
+			output.write(bytes);
+		}
+		if (size % 1024 > 0) {
+			bytes = new byte[(int)(size % 1024)];
+			input.readFully(bytes);
+			output.write(bytes);
 		}
 	}
 	

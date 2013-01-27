@@ -3,6 +3,8 @@
  */
 package org.restq.messaging.repository;
 
+import java.util.List;
+
 import org.restq.messaging.Destination;
 import org.springframework.stereotype.Repository;
 
@@ -22,4 +24,6 @@ public interface DestinationRepository {
 	void save(Destination destination);
 	
 	void refresh();
+	
+	List<Destination> findAll();
 }

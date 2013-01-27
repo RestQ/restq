@@ -10,13 +10,13 @@ import org.restq.messaging.EnqueueRequest;
 import org.restq.messaging.repository.DestinationRepository;
 import org.restq.messaging.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 /**
  * @author ganeshs
  *
  */
-@Component
+@Controller("tcpMessageController")
 public class MessageController {
 
 	@Autowired

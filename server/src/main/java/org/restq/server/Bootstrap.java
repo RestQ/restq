@@ -43,6 +43,13 @@ public class Bootstrap {
 	
 	public void start() {
 		multicastServer.start();
+		while(! multicastServer.isStarted()) {
+			logger.info("Multicast server is not up yet. Waiting for 100ms");
+			try {
+				Thread.sleep(100);
+			} catch (Exception e) {
+			}
+		}
 		tcpServer.start();
 		restServer.start();
 		

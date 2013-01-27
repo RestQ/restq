@@ -4,11 +4,15 @@
 package org.restq.messaging.repository.impl;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.restq.core.RestQException;
 import org.restq.core.Serializer;
+import org.restq.journal.Journal;
+import org.restq.journal.JournalListener;
 import org.restq.journal.JournalReaderCallback;
 import org.restq.journal.Record;
 import org.restq.journal.repository.JournalRepository;
@@ -20,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author ganeshs
  *
  */
-public class DestinationRepositoryImpl implements DestinationRepository {
+public class DestinationRepositoryImpl implements DestinationRepository, JournalListener {
 	
 	private Map<String, Destination> destinations = new HashMap<String, Destination>();
 
@@ -30,8 +34,15 @@ public class DestinationRepositoryImpl implements DestinationRepository {
 	@Autowired
 	private Serializer serializer;
 	
+	public void init() {
+		Journal journal = journalRepository.getDestinationsJournal();
+		journal.addListener(this);
+		refresh();
+	}
+	
 	public void refresh() {
-		journalRepository.getDestinationsJournal().readRecords(new JournalReaderCallback() {
+		Journal journal = journalRepository.getDestinationsJournal();
+		journal.readRecords(new JournalReaderCallback() {
 			
 			@Override
 			public void readUpdateRecord(Record record) {
@@ -109,4 +120,13 @@ public class DestinationRepositoryImpl implements DestinationRepository {
 		save(destination, true);
 	}
 
+	@Override
+	public List<Destination> findAll() {
+		return new ArrayList<Destination>(destinations.values());
+	}
+	
+	@Override
+	public void journalUpdated(Journal journal) {
+		refresh();
+	}
 }

@@ -3,11 +3,13 @@
  */
 package org.restq.journal;
 
+import org.restq.core.DataSerializable;
+
 /**
  * @author ganeshs
  *
  */
-public interface JournalFile {
+public interface JournalFile extends DataSerializable {
 
 	long getSize();
 	

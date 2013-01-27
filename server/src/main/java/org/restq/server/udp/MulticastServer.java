@@ -104,6 +104,7 @@ public class MulticastServer implements Runnable, RestQComponent, MulticastServi
 	@Override
 	public void run() {
 		logger.info("Starting the multicast server at - " + port);
+		started = true;
 		while(started) {
 			try {
 				socket.receive(recevicePacket);
@@ -119,7 +120,6 @@ public class MulticastServer implements Runnable, RestQComponent, MulticastServi
 	public void start() {
 		logger.info("Starting the multicast socket");
 		new Thread(this).start();
-		started = true;
 	}
 	
 	@Override

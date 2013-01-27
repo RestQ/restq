@@ -30,13 +30,18 @@ public class JournalRepositoryImpl implements JournalRepository {
 	@Override
 	public Journal getDestinationsJournal() {
 		String destDir = journalDir + SEPARATOR + DESTINATIONS_DIR;
-		Journal journal = journals.get(destDir);
+		Journal journal = journals.get("destinations");
 		if (journal == null) {
 			createDirIfNotExists(destDir);
-			journal = new JournalImpl("destinations", destDir, "destinations", ".conf", 1, 1024*10);
-			journals.put(destDir, journal);
+			journal = new JournalImpl("destinations", destDir, "destinations", "conf", 1, 1024*10);
+			journals.put(journal.getId(), journal);
 		}
 		return journal;
+	}
+	
+	@Override
+	public Journal getJournal(String id) {
+		return journals.get(id);
 	}
 
 	private void createDirIfNotExists(String dir) {
@@ -44,5 +49,19 @@ public class JournalRepositoryImpl implements JournalRepository {
 		if (!file.exists()) {
 			file.mkdirs();
 		}
+	}
+
+	/**
+	 * @return the journalDir
+	 */
+	public String getJournalDir() {
+		return journalDir;
+	}
+
+	/**
+	 * @param journalDir the journalDir to set
+	 */
+	public void setJournalDir(String journalDir) {
+		this.journalDir = journalDir;
 	}
 }

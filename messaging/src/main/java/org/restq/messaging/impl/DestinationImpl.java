@@ -65,7 +65,7 @@ public abstract class DestinationImpl implements Destination {
 		}
 		output.writeInt(length);
 		if (name != null) {
-			output.writeChars(name);
+			output.write(name.getBytes());
 		}
 	}
 }

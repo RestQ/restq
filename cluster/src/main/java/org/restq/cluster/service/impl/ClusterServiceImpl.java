@@ -12,8 +12,11 @@ import org.restq.cluster.MembershipListener;
 import org.restq.cluster.Node;
 import org.restq.cluster.PartitionAssignmentStrategy;
 import org.restq.cluster.SlaveAssignmentStrategy;
+import org.restq.cluster.nio.ResponseFuture;
+import org.restq.cluster.nio.ResponseFutureListener;
 import org.restq.cluster.service.ClusterService;
 import org.restq.cluster.service.NotMasterException;
+import org.restq.cluster.service.ReplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -30,6 +33,9 @@ public class ClusterServiceImpl implements ClusterService, MembershipListener {
 	
 	@Autowired
 	private SlaveAssignmentStrategy slaveAssignmentStrategy;
+	
+	@Autowired
+	private ReplicationService replicationService;
 	
 	private static Logger logger = Logger.getLogger(ClusterServiceImpl.class);
 	
@@ -68,11 +74,28 @@ public class ClusterServiceImpl implements ClusterService, MembershipListener {
 	
 	@Override
 	public void memberAdded(Cluster cluster, Member member) {
-		
+		if (! member.equals(node.getMember())) {
+			replicateJournals(member);
+		}
 	}
 	
 	@Override
 	public void memberRemoved(Cluster cluster, Member member) {
 		
+	}
+	
+	protected void replicateJournals(Member member) {
+		ResponseFuture response = replicationService.replicateDestinations(member);
+		response.addListener(new ResponseFutureListener() {
+			@Override
+			public void completed(ResponseFuture future) {
+				try {
+					System.out.println(future.get().getMessage());
+				} catch (InterruptedException e) {
+					
+				}
+				// TODO Auto-generated method stub
+			}
+		});
 	}
 }

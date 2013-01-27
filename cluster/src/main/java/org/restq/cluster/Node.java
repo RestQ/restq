@@ -33,7 +33,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author ganeshs
  *
  */
-public class Node {
+public class Node implements Runnable {
 
 	private ServerBootstrap bootstrap;
 	
@@ -111,7 +111,13 @@ public class Node {
 		for(Plugin plugin : plugins) {
 			plugin.bind(this);
 		}
+		Thread thread = new Thread(this);
+		thread.start();
 		joiner.join(this);
+	}
+	
+	@Override
+	public void run() {
 		logger.info("Starting the node at the port - " + port);
 		channel = bootstrap.bind(new InetSocketAddress(port));
 	}
@@ -139,6 +145,7 @@ public class Node {
 	
 	public void joined() {
 		joined = true;
+		setState(State.active);
 	}
 	
 	/**
@@ -372,5 +379,12 @@ public class Node {
 			return member.equals(cluster.getMaster());
 		}
 		return false;
+	}
+
+	/**
+	 * @param state the state to set
+	 */
+	public void setState(State state) {
+		this.state = state;
 	}
 }

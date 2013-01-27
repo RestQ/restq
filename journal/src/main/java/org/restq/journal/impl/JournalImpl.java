@@ -3,16 +3,19 @@
  */
 package org.restq.journal.impl;
 
+import java.io.DataInput;
+import java.io.DataOutput;
 import java.io.File;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicLong;
 
 import org.restq.core.RestQException;
 import org.restq.journal.InternalRecord;
 import org.restq.journal.Journal;
 import org.restq.journal.JournalFile;
+import org.restq.journal.JournalListener;
 import org.restq.journal.JournalReaderCallback;
 import org.restq.journal.Record;
 
@@ -37,6 +40,8 @@ public class JournalImpl implements Journal {
 	private List<JournalFile> files = new ArrayList<JournalFile>();
 	
 	private JournalFile currentFile = null;
+	
+	private List<JournalListener> listeners = new ArrayList<JournalListener>();
 	
 	public static final int ADD_RECORD_MARKER = 1;
 	
@@ -74,7 +79,7 @@ public class JournalImpl implements Journal {
 		});
 		
 		for (String fileName : fileNames) {
-			addJournalFile(fileName);
+			addJournalFile(fileDir + "/" + fileName);
 		}
 
 		// Create new files to ensure minimum number of files are pre-created
@@ -230,5 +235,66 @@ public class JournalImpl implements Journal {
 			file.close();
 		}
 		files.clear();
+	}
+	
+	@Override
+	public void readData(DataInput input) throws IOException {
+		int size = input.readInt();
+		for (int i = 0; i < size; i++) {
+			if (files.size() <= i) {
+				addNewJournalFile();
+			}
+			files.get(i).readData(input);
+		}
+		
+		if (size > 0) {
+			for (JournalListener listener : listeners) {
+				listener.journalUpdated(this);
+			}
+		}
+	}
+	
+	@Override
+	public void writeData(DataOutput output) throws IOException {
+		output.writeInt(files.size());
+		for (JournalFile file : files) {
+			file.writeData(output);
+		}
+	}
+	
+	@Override
+	public void addListener(JournalListener listener) {
+		this.listeners.add(listener);
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#hashCode()
+	 */
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		return result;
+	}
+
+	/* (non-Javadoc)
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 */
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		JournalImpl other = (JournalImpl) obj;
+		if (id == null) {
+			if (other.id != null)
+				return false;
+		} else if (!id.equals(other.id))
+			return false;
+		return true;
 	}
 }

@@ -8,7 +8,10 @@ import org.restq.cluster.JoinRequest;
 import org.restq.cluster.JoinResponse;
 import org.restq.cluster.service.ClusterService;
 import org.restq.cluster.service.NotMasterException;
+import org.restq.core.Response;
 import org.restq.core.Response.Status;
+import org.restq.journal.ImportJournalRequest;
+import org.restq.journal.service.JournalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,7 +24,10 @@ public class ClusterController {
 	
 	@Autowired
 	private ClusterService clusterService;
-
+	
+	@Autowired
+	private JournalService journalService;
+	
 	public JoinResponse join(JoinRequest request) {
 		JoinResponse response = null;
 		try {
@@ -34,5 +40,10 @@ public class ClusterController {
 			response.setMessage(e.getMessage());
 		}
 		return response; 
+	}
+	
+	public Response importJournal(ImportJournalRequest request) {
+		journalService.importJournal(request.getJournalId(), request.getInput());
+		return new Response(Status.success);
 	}
 }

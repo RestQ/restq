@@ -5,11 +5,8 @@ package org.restq.messaging.impl;
 
 import java.io.DataInput;
 import java.io.DataOutput;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 
-import org.restq.core.RestQException;
 import org.restq.core.utility.PriorityQueue;
 import org.restq.core.utility.impl.PriorityQueueImpl;
 import org.restq.messaging.Queue;
@@ -25,17 +22,10 @@ public class QueueImpl extends DestinationImpl implements Queue {
 	
 	private PriorityQueue<ServerMessage> priorityQueue = new PriorityQueueImpl<ServerMessage>();
 	
-	private RandomAccessFile file;
-	
 	/**
 	 * <p>Default Constructor</p>
 	 */
 	public QueueImpl() {
-		try {
-			file = new RandomAccessFile("messages", "rw");
-		} catch (FileNotFoundException e) {
-			throw new RestQException(e);
-		}
 	}
 	
 	/**
@@ -49,13 +39,7 @@ public class QueueImpl extends DestinationImpl implements Queue {
 
 	@Override
 	public void addMessage(ServerMessage message) {
-//		priorityQueue.enqueue(message, message.getPriority());
-		try {
-			message.writeData(file);
-		} catch (Exception e) {
-			// TODO: handle exception
-			e.printStackTrace();
-		}
+		priorityQueue.enqueue(message, message.getPriority());
 	}
 
 	/**

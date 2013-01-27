@@ -46,7 +46,7 @@ define "restq" do
   
   desc "Cluster code"
   define "cluster" do
-	  compile.with REST_EXPRESS, SLF4J, SPRING, GSON, project('core')
+	  compile.with REST_EXPRESS, SLF4J, SPRING, GSON, project('core'), project('journal')
     test.using :testng
     test.with MOCKITO
 	  package :jar
@@ -62,7 +62,7 @@ define "restq" do
   
   desc "Server code"
   define "server" do
-	  compile.with REST_EXPRESS, SLF4J, SPRING, GSON, project('cluster'), project('core'), project('messaging')
+	  compile.with REST_EXPRESS, SLF4J, SPRING, GSON, project('cluster'), project('core'), project('messaging'), project('journal')
     test.using :testng
     test.with MOCKITO
 	  package :jar

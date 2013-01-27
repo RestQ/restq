@@ -5,12 +5,14 @@ package org.restq.journal;
 
 import java.util.List;
 
+import org.restq.core.DataSerializable;
+
 
 /**
  * @author ganeshs
  *
  */
-public interface Journal {
+public interface Journal extends DataSerializable {
 	
 	String getId();
 	
@@ -25,4 +27,6 @@ public interface Journal {
 	void close();
 	
 	void readRecords(JournalReaderCallback callback);
+	
+	void addListener(JournalListener listener);
 }

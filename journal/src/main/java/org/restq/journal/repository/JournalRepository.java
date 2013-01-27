@@ -17,4 +17,5 @@ public interface JournalRepository {
 
 	Journal getDestinationsJournal();
 	
+	Journal getJournal(String id);
 }

@@ -5,6 +5,7 @@ package org.restq.server.http;
 
 import org.jboss.netty.logging.InternalLoggerFactory;
 import org.jboss.netty.logging.Log4JLoggerFactory;
+import org.restq.core.ConflictException;
 import org.restq.core.RestQComponent;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -98,5 +99,6 @@ public class RestServer implements RestQComponent {
 	}
 
 	private void mapExceptions(RestExpress server) {
+		server.mapException(ConflictException.class, com.strategicgains.restexpress.exception.ConflictException.class);
 	}
 }

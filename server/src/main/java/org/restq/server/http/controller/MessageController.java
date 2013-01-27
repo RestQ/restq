@@ -20,7 +20,7 @@ import com.strategicgains.restexpress.Response;
  * @author ganeshs
  *
  */
-@Controller
+@Controller("httpMessageController")
 public class MessageController {
 	
 	@Autowired

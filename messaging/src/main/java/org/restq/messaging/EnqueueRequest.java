@@ -69,7 +69,7 @@ public class EnqueueRequest extends Request {
 	public void writeData(DataOutput output) throws IOException {
 		super.writeData(output);
 		output.writeInt(destinationId.length());
-		output.writeChars(destinationId);
+		output.write(destinationId.getBytes());
 		message.writeData(output);
 	}
 }

@@ -9,14 +9,14 @@ import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferInputStream;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
-import org.jboss.netty.handler.codec.frame.FrameDecoder;
+import org.jboss.netty.handler.codec.oneone.OneToOneDecoder;
 import org.restq.core.Serializer;
 
 /**
  * @author ganeshs
  *
  */
-public class DataDecoder extends FrameDecoder {
+public class DataDecoder extends OneToOneDecoder {
 	
 	private Serializer serializer;
 	
@@ -29,7 +29,8 @@ public class DataDecoder extends FrameDecoder {
 	}
 	
 	@Override
-	protected Object decode(ChannelHandlerContext ctx, Channel channel, ChannelBuffer buffer) throws Exception {
+	protected Object decode(ChannelHandlerContext ctx, Channel channel, Object msg) throws Exception {
+		ChannelBuffer buffer = (ChannelBuffer) msg;
 		DataInput dataInput = new ChannelBufferInputStream(buffer);
 		return serializer.deserialize(dataInput);
 	}

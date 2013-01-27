@@ -12,6 +12,9 @@ import org.springframework.stereotype.Component;
 import com.strategicgains.restexpress.Request;
 import com.strategicgains.restexpress.Response;
 import com.strategicgains.restexpress.RestExpress;
+import com.strategicgains.restexpress.exception.ConflictException;
+import com.strategicgains.restexpress.exception.NotFoundException;
+import com.strategicgains.restexpress.exception.ServiceException;
 import com.strategicgains.restexpress.pipeline.MessageObserver;
 import com.strategicgains.restexpress.plugin.AbstractPlugin;
 
@@ -66,6 +69,9 @@ public class LoggerPlugin extends AbstractPlugin {
 		
 		@Override
 		protected void onException(Throwable e, Request request, Response response) {
+			if (e instanceof NotFoundException || e instanceof ConflictException) {
+				return;
+			}
 			logger.error(request.getEffectiveHttpMethod().toString() + " " + request.getUrl() + " threw exception: " + e.getClass().getSimpleName(), e);
 			super.onException(e, request, response);
 		}

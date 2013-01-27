@@ -4,6 +4,7 @@
   <classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
   <classpathentry kind="src" combineaccessrules="false" path="/restq-cluster"/>
   <classpathentry kind="src" combineaccessrules="false" path="/restq-core"/>
+  <classpathentry kind="src" combineaccessrules="false" path="/restq-journal"/>
   <classpathentry kind="src" combineaccessrules="false" path="/restq-messaging"/>
   <classpathentry kind="output" path="target/classes"/>
   <classpathentry kind="var" path="M2_REPO/org/testng/testng/5.10/testng-5.10-jdk15.jar" sourcepath="M2_REPO/org/testng/testng/5.10/testng-5.10-sources.jar" javadocpath="M2_REPO/org/testng/testng/5.10/testng-5.10-javadoc.jar"/>

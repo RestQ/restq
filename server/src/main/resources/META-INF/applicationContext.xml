@@ -44,11 +44,19 @@
 	
 	<bean name="clusterService" class="org.restq.cluster.service.impl.ClusterServiceImpl" init-method="init"/>
 	
+	<bean name="destinationService" class="org.restq.messaging.service.impl.DestinationServiceImpl"/>
+	
+	<bean name="messageService" class="org.restq.messaging.service.impl.MessageServiceImpl"/>
+	
+	<bean name="replicationService" class="org.restq.cluster.service.impl.ReplicationServiceImpl"/>
+	
+	<bean name="journalService" class="org.restq.journal.service.impl.JournalServiceImpl"/>
+	
 	<bean name="journalRepository" class="org.restq.journal.repository.impl.JournalRepositoryImpl">
-		<property name="journalDir" value="#{journal.dir}"/>
+		<property name="journalDir" value="${journal.dir}"/>
 	</bean>
 	
-	<bean name="destinationRepository" class="org.restq.messaging.repository.impl.DestinationRepositoryImpl"/>
+	<bean name="destinationRepository" class="org.restq.messaging.repository.impl.DestinationRepositoryImpl" init-method="init"/>
 	
 	<beans profile="test">
 		<context:property-placeholder location="restq.test.properties" order="0"/>
@@ -57,5 +65,5 @@
     <beans profile="restq1">
 		<context:property-placeholder location="restq1.properties" order="0"/>
     </beans>
-    
+
 </beans>
