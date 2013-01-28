@@ -91,7 +91,7 @@ public class ConnectionImpl implements Connection {
 			return;
 		}
 		
-		ChannelFuture future = bootstrap.connect(address);
+		ChannelFuture future = connect();
 		try {
 			if (! future.sync().isSuccess()) {
 				throw new RestQException(future.getCause());
@@ -101,6 +101,14 @@ public class ConnectionImpl implements Connection {
 		}
 		channel = future.getChannel();
 		open = true;
+	}
+	
+	protected ChannelFuture connect() {
+		return bootstrap.connect(address);
+	}
+	
+	protected ClientBootstrap getBootstrap() {
+		return bootstrap;
 	}
 	
 	/**

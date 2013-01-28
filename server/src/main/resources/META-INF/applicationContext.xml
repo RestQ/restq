@@ -34,6 +34,8 @@
 	
 	<bean name="cluster" class="org.restq.cluster.impl.ClusterImpl"/>
 	
+	<bean name="partitionStrategy" class="org.restq.cluster.impl.DefaultPartitionStrategy"/>
+	
 	<bean name="partitionAssignmentStrategy" class="org.restq.cluster.impl.SimplePartitionAssignmentStrategy"/>
 	
 	<bean name="slaveAssignmentStrategy" class="org.restq.cluster.impl.SimpleSlaveAssignmentStrategy"/>
@@ -45,6 +47,8 @@
 	<bean name="clusterService" class="org.restq.cluster.service.impl.ClusterServiceImpl" init-method="init"/>
 	
 	<bean name="destinationService" class="org.restq.messaging.service.impl.DestinationServiceImpl"/>
+	
+	<bean name="routerService" class="org.restq.server.router.service.impl.RouterServiceImpl"/>
 	
 	<bean name="messageService" class="org.restq.messaging.service.impl.MessageServiceImpl"/>
 	

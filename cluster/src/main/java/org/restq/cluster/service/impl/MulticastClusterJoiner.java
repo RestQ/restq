@@ -46,8 +46,10 @@ public class MulticastClusterJoiner implements ClusterJoiner {
 	/**
 	 * @param service
 	 */
-	public MulticastClusterJoiner(MulticastService service) {
+	public MulticastClusterJoiner(MulticastService service, ClusterService clusterService, ConnectionManager connectionManager) {
 		this.multicastService = service;
+		this.clusterService = clusterService;
+		this.connectionManager = connectionManager;
 	}
 
 	@Override

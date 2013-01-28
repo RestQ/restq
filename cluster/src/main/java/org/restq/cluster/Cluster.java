@@ -26,4 +26,8 @@ public interface Cluster {
 	Set<Member> getMembers();
 	
 	void setMembers(Set<Member> members);
+	
+	Member getMember(Partition partition);
+	
+	int getPartitions();
 }

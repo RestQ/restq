@@ -30,13 +30,13 @@ import org.springframework.stereotype.Component;
 @Component
 public class MulticastServer implements Runnable, RestQComponent, MulticastService {
 	
-	private int port = 27401;
+	private int port = DEFAULT_PORT;
 	
-	private String group = "224.2.2.3";
+	private String group = DEFAULT_GROUP;
 	
 	private boolean reuseAddress = true;
 	
-	private int receiveBufferSize = 262140;
+	private int receiveBufferSize = DEFAULT_PACKET_SIZE;
 	
 	private int timeToLive = 100;
 	
@@ -55,6 +55,24 @@ public class MulticastServer implements Runnable, RestQComponent, MulticastServi
 	private MulticastMessageHandler messageHandler;
 	
 	private Logger logger = Logger.getLogger(MulticastServer.class);
+	
+	public static final int DEFAULT_PORT = 27401;
+	
+	public static final String DEFAULT_GROUP = "224.2.2.3";
+	
+	public static final int DEFAULT_PACKET_SIZE = 64 * 1024;
+	
+	public MulticastServer() {
+	}
+	
+	/**
+	 * @param handler
+	 * @param serializer
+	 */
+	public MulticastServer(MulticastMessageHandler handler, Serializer serializer) {
+		this.messageHandler = handler;
+		this.serializer = serializer;
+	}
 	
 	public void init() {
 		socket = createMulticastSocket();
@@ -105,6 +123,10 @@ public class MulticastServer implements Runnable, RestQComponent, MulticastServi
 	public void run() {
 		logger.info("Starting the multicast server at - " + port);
 		started = true;
+		process();
+	}
+	
+	protected void process() {
 		while(started) {
 			try {
 				socket.receive(recevicePacket);

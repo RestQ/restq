@@ -3,10 +3,6 @@
  */
 package org.restq.cluster.impl;
 
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.restq.cluster.Cluster;
 import org.restq.cluster.Member;
 import org.restq.cluster.Partition;
@@ -49,10 +45,6 @@ public class SimplePartitionAssignmentStrategy implements PartitionAssignmentStr
 	}
 
 	protected Partition nextPartition() {
-		int partitionCount = 0;
-		for (Member member : cluster.getMembers()) {
-			partitionCount += member.getPartitions().size();
-		}
-		return new Partition(partitionCount + 1);
+		return new Partition(cluster.getPartitions() + 1);
 	}
 }

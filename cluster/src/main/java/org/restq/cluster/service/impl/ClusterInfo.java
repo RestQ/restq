@@ -19,7 +19,7 @@ public class ClusterInfo implements DataSerializable {
 	
 	private boolean request;
 	
-	private Member member = new MemberImpl();
+	private Member member;
 	
 	private int totalMembers;
 	
@@ -82,6 +82,7 @@ public class ClusterInfo implements DataSerializable {
 	@Override
 	public void readData(DataInput input) throws IOException {
 		request = input.readBoolean();
+		member =  new MemberImpl();
 		member.readData(input);
 		totalMembers = input.readInt();
 	}
@@ -91,5 +92,36 @@ public class ClusterInfo implements DataSerializable {
 		output.writeBoolean(request);
 		member.writeData(output);
 		output.writeInt(totalMembers);
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((member == null) ? 0 : member.hashCode());
+		result = prime * result + (request ? 1231 : 1237);
+		result = prime * result + totalMembers;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ClusterInfo other = (ClusterInfo) obj;
+		if (member == null) {
+			if (other.member != null)
+				return false;
+		} else if (!member.equals(other.member))
+			return false;
+		if (request != other.request)
+			return false;
+		if (totalMembers != other.totalMembers)
+			return false;
+		return true;
 	}
 }

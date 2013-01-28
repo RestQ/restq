@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.restq.cluster.nio;
+package org.restq.core;
 
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
@@ -14,9 +14,6 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import org.restq.cluster.DummyException;
-import org.restq.core.DataSerializable;
-import org.restq.core.Serializer;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -41,14 +38,14 @@ public class SerializerTest {
 	}
 	
 	@Test(expectedExceptions=DummyException.class)
-	public void testSerializeWritesClassName() throws IOException {
+	public void shouldWriteClassName() throws IOException {
 		DataSerializable serializable = mock(DataSerializable.class);
 		doThrow(new DummyException()).when(dataOutput).writeUTF(serializable.getClass().getName());
 		serializer.serialize(dataOutput, serializable);
 	}
 	
 	@Test(expectedExceptions=DummyException.class)
-	public void testSerializeWritesData() throws IOException {
+	public void shouldWriteData() throws IOException {
 		DataSerializable serializable = mock(DataSerializable.class);
 		doNothing().when(dataOutput).writeUTF(serializable.getClass().getName());
 		doThrow(new DummyException()).when(serializable).writeData(dataOutput);
@@ -56,12 +53,11 @@ public class SerializerTest {
 	}
 	
 	@Test(expectedExceptions=DummyException.class)
-	public void testDeserialize() throws IOException {
+	public void shouldDeserialize() throws IOException {
 		DataSerializable serializable = mock(DataSerializable.class);
 		doReturn(serializable).when(serializer).getInstance(DataSerializable.class.getName());
 		when(dataInput.readUTF()).thenReturn(DataSerializable.class.getName());
 		doThrow(new DummyException()).when(serializable).readData(dataInput);
 		serializer.deserialize(dataInput);
 	}
-	
 }

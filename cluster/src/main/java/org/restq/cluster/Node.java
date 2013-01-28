@@ -82,6 +82,16 @@ public class Node implements Runnable {
 		passive, sync, active
 	}
 	
+	public Node() {
+	}
+	
+	public Node(Cluster cluster, ClusterJoiner joiner, Serializer serializer) {
+		this.cluster = cluster;
+		this.joiner = joiner;
+		this.serializer = serializer;
+		init();
+	}
+	
 	public void init() {
 		member = new MemberImpl(id, new InetSocketAddress(port));
 		bootstrap = new ServerBootstrap(new NioServerSocketChannelFactory());
@@ -102,6 +112,10 @@ public class Node implements Runnable {
 		plugin.register(this);
 	}
 	
+	protected ServerBootstrap getBootstrap() {
+		return bootstrap;
+	}
+	
 	public void bind() {
 		logger.info("Binding the node");
 		if (channel != null && channel.isOpen()) {
@@ -119,7 +133,11 @@ public class Node implements Runnable {
 	@Override
 	public void run() {
 		logger.info("Starting the node at the port - " + port);
-		channel = bootstrap.bind(new InetSocketAddress(port));
+		channel = bindSocket();
+	}
+	
+	protected Channel bindSocket() {
+		return bootstrap.bind(new InetSocketAddress(port));
 	}
 	
 	protected void setBootstrapOptions() {
@@ -135,6 +153,7 @@ public class Node implements Runnable {
 		for(Plugin plugin : plugins) {
 			plugin.shutdown(this);
 		}
+		joiner.unjoin(this);
 		channel.close();
 		bootstrap.getFactory().releaseExternalResources();
 	}

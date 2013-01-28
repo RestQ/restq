@@ -45,7 +45,7 @@ public class Serializer {
 		return deserialize(input);
 	}
 	
-	public DataSerializable getInstance(String className) {
+	protected DataSerializable getInstance(String className) {
 		DataSerializable serializable = null;
 		try {
 			serializable = (DataSerializable) Class.forName(className).newInstance();

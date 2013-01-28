@@ -34,7 +34,7 @@ public class RoutesPlugin extends AbstractPlugin {
 	}
 
 	protected void defineRoutes(RestExpress server) {
-		server.uri("/send", messageController).action("sendMessage", HttpMethod.POST);
+		server.uri("/queues/{destination_name}/send", messageController).action("sendMessage", HttpMethod.POST);
 		server.uri("/queues/", destinationController).action("createQueues", HttpMethod.POST);
 		server.uri("/topics/", destinationController).action("createTopics", HttpMethod.POST);
 		server.uri("/queues/", destinationController).action("getQueues", HttpMethod.GET);

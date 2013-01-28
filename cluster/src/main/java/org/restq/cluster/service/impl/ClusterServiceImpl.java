@@ -39,6 +39,25 @@ public class ClusterServiceImpl implements ClusterService, MembershipListener {
 	
 	private static Logger logger = Logger.getLogger(ClusterServiceImpl.class);
 	
+	public ClusterServiceImpl() {
+	}
+	
+	/**
+	 * @param node
+	 * @param partitionAssignmentStrategy
+	 * @param slaveAssignmentStrategy
+	 * @param replicationService
+	 */
+	public ClusterServiceImpl(Node node,
+			PartitionAssignmentStrategy partitionAssignmentStrategy,
+			SlaveAssignmentStrategy slaveAssignmentStrategy,
+			ReplicationService replicationService) {
+		this.node = node;
+		this.partitionAssignmentStrategy = partitionAssignmentStrategy;
+		this.slaveAssignmentStrategy = slaveAssignmentStrategy;
+		this.replicationService = replicationService;
+	}
+
 	void init() {
 		node.getCluster().addMembershipListener(this);
 	}
@@ -74,9 +93,10 @@ public class ClusterServiceImpl implements ClusterService, MembershipListener {
 	
 	@Override
 	public void memberAdded(Cluster cluster, Member member) {
-		if (! member.equals(node.getMember())) {
-			replicateJournals(member);
+		if (member.equals(node.getMember())) {
+			return;
 		}
+		replicateJournals(member);
 	}
 	
 	@Override

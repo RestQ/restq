@@ -3,16 +3,23 @@
  */
 package org.restq.cluster;
 
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
-import java.net.InetSocketAddress;
-
-import org.jboss.netty.bootstrap.ServerBootstrap;
 import org.jboss.netty.channel.Channel;
+import org.restq.cluster.Node.State;
+import org.restq.cluster.pipeline.MessageObserver;
+import org.restq.cluster.pipeline.Plugin;
+import org.restq.cluster.pipeline.PostProcessor;
+import org.restq.cluster.pipeline.PreProcessor;
 import org.restq.cluster.service.ClusterJoiner;
+import org.restq.core.Serializer;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -24,68 +31,111 @@ public class NodeTest {
 
 	private Node node;
 	
-	private ServerBootstrap bootstrap;
+	private Channel channel;
 	
-	private MulticastServer multicastService;
-	
-	private Member member;
-	
-	private ClusterManager clusterManager;
+	private Cluster cluster;
 	
 	private ClusterJoiner joiner; 
+	
+	private Serializer serializer;
 
 	@BeforeMethod
 	public void setup() throws Exception {
-		bootstrap = mock(ServerBootstrap.class);
-		multicastService = mock(MulticastServer.class);
-		member = mock(Member.class);
-		clusterManager = mock(ClusterManager.class);
-		when(clusterManager.getCluster()).thenReturn(mock(Cluster.class));
 		joiner = mock(ClusterJoiner.class);
-		node = new Node(member, clusterManager, multicastService, joiner, bootstrap);
+		serializer = mock(Serializer.class);
+		cluster = mock(Cluster.class);
+		node = new Node(cluster, joiner, serializer);
+		node = spy(node);
+		channel = mock(Channel.class);
+		doReturn(channel).when(node).bindSocket();
 	}
 	
 	@Test
-	public void shouldStartNode() {
-		when(member.getAddress()).thenReturn(mock(InetSocketAddress.class));
-		node.start();
-		verify(multicastService).start();
-		verify(bootstrap).bind(member.getAddress());
+	public void shouldRegisterPlugin() {
+		Plugin plugin = mock(Plugin.class);
+		node.registerPlugin(plugin);
+		assertTrue(node.getPlugins().contains(plugin));
+	}
+	
+	@Test
+	public void shouldBindSocket() {
+		node.bind();
+		verify(node).bindSocket();
+	}
+	
+	@Test
+	public void shouldJoinClusterOnBind() {
+		node.bind();
 		verify(joiner).join(node);
 	}
 	
 	@Test
-	public void shouldStopNode() {
-		Channel channel = mock(Channel.class); 
-		when(member.getAddress()).thenReturn(mock(InetSocketAddress.class));
-		when(bootstrap.bind(member.getAddress())).thenReturn(channel);
-		node.start();
-		node.stop();
-		verify(multicastService).stop();
+	public void shouldCallRegisteredPluginsOnBind() {
+		Plugin plugin = mock(Plugin.class);
+		node.registerPlugin(plugin);
+		node.bind();
+		verify(joiner).join(node);
+		verify(plugin).register(node);
+	}
+	
+	@Test
+	public void shouldShutdownNode() {
+		node.bind();
+		try {
+			Thread.sleep(500);
+		} catch (Exception e) {
+		}
+		node.shutdown();
 		verify(joiner).unjoin(node);
 		verify(channel).close();
 	}
 	
 	@Test
-	public void shouldRejectItsOwnJoinRequest() {
-		JoinRequest request = new JoinRequest(node.getMember());
-		node.messageRecieved(request);
-		verify(clusterManager, never()).join(request);
+	public void shouldMarkAsJoined() {
+		node.joined();
+		assertTrue(node.hasJoined());
+		assertEquals(node.getState(), State.active);
 	}
 	
 	@Test
-	public void shouldRejectJoinRequestIfNodeIsNotMaster() {
-		JoinRequest request = new JoinRequest(mock(Member.class));
-		when(clusterManager.getCluster().getMaster()).thenReturn(mock(Member.class));
-		node.messageRecieved(request);
-		verify(clusterManager, never()).join(request);
+	public void shouldReturnTrueIfTheNodeIsMaster() {
+		Member member = node.getMember();
+		when(cluster.getMaster()).thenReturn(member);
+		assertTrue(node.isMaster());
 	}
 	
 	@Test
-	public void shouldAcceptJoinRequestIfNodeIsMaster() {
-		JoinRequest request = new JoinRequest(mock(Member.class));
-		when(clusterManager.getCluster().getMaster()).thenReturn(member);
-		node.messageRecieved(request);
-		verify(clusterManager).join(request);
+	public void shouldReturnFalseIfTheNodeIsNotMaster() {
+		when(cluster.getMaster()).thenReturn(mock(Member.class));
+		assertFalse(node.isMaster());
 	}
+	
+	@Test
+	public void shouldMapRequestToAction() {
+		node.map(JoinRequest.class, "test", "equals");
+		assertEquals(node.getRequestMapper().getMappings().get(JoinRequest.class).getController(), "test");
+		assertEquals(node.getRequestMapper().getMappings().get(JoinRequest.class).getAction().getName(), "equals");
+	}
+	
+	@Test
+	public void shouldAddPreProcessors() {
+		PreProcessor processor = mock(PreProcessor.class);
+		node.addPreProcessor(processor);
+		assertTrue(node.getPreProcessors().contains(processor));
+	}
+	
+	@Test
+	public void shouldAddPostProcessors() {
+		PostProcessor processor = mock(PostProcessor.class);
+		node.addPostProcessor(processor);
+		assertTrue(node.getPostProcessors().contains(processor));
+	}
+	
+	@Test
+	public void shouldAddMessageObservers() {
+		MessageObserver observer = mock(MessageObserver.class);
+		node.addMessageObserver(observer);
+		assertTrue(node.getMessageObservers().contains(observer));
+	}
+	
 }

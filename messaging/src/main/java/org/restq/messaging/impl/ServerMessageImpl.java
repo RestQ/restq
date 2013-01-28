@@ -15,6 +15,9 @@ import org.restq.messaging.ServerMessage;
  *
  */
 public class ServerMessageImpl extends MessageImpl implements ServerMessage {
+	
+	public ServerMessageImpl() {
+	}
 
 	/**
 	 * @param id

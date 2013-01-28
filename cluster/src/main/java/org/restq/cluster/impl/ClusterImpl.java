@@ -47,14 +47,11 @@ public class ClusterImpl implements Cluster {
 	@Override
 	public boolean unjoin(Member member) {
 		synchronized (members) {
-			for (Partition partition : member.getPartitions()) {
-				members.remove(partition);
-			}
+			members.remove(member);
 			if (member.equals(master)) {
+				setMaster(null);
 				if (!members.isEmpty()) {
 					// TODO announce the current node as master?? or conduct an election again
-				} else {
-					setMaster(null);
 				}
 			}
 		}
@@ -100,5 +97,24 @@ public class ClusterImpl implements Cluster {
 	
 	public void setMembers(Set<Member> members) {
 		this.members = members;
+	}
+	
+	@Override
+	public Member getMember(Partition partition) {
+		for (Member member : members) {
+			if (member.getPartitions().contains(partition)) {
+				return member;
+			}
+		}
+		return null;
+	}
+	
+	@Override
+	public int getPartitions() {
+		int partitionCount = 0;
+		for (Member member : members) {
+			partitionCount += member.getPartitions().size();
+		}
+		return partitionCount;
 	}
 }

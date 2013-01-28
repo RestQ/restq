@@ -8,7 +8,7 @@ import org.restq.core.Response.Status;
 import org.restq.messaging.Destination;
 import org.restq.messaging.EnqueueRequest;
 import org.restq.messaging.repository.DestinationRepository;
-import org.restq.messaging.service.MessageService;
+import org.restq.server.router.service.RouterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
@@ -20,14 +20,14 @@ import org.springframework.stereotype.Controller;
 public class MessageController {
 
 	@Autowired
-	private MessageService messageService;
+	private RouterService routerService;
 	
 	@Autowired
 	private DestinationRepository destinationRepository;
 	
 	public Response sendMessage(EnqueueRequest request) {
 		Destination destination = destinationRepository.find(request.getDestinationId());
-		messageService.sendMessage(destination, request.getMessage());
+		routerService.routeMessage(destination, request.getMessage());
 		return new Response(Status.success);
 	}
 }

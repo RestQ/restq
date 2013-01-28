@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.restq.cluster;
+package org.restq.core;
 
 /**
  * @author ganeshs

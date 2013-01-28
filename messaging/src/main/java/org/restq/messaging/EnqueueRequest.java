@@ -8,6 +8,7 @@ import java.io.DataOutput;
 import java.io.IOException;
 
 import org.restq.core.Request;
+import org.restq.messaging.impl.ServerMessageImpl;
 
 /**
  * @author ganeshs
@@ -62,7 +63,11 @@ public class EnqueueRequest extends Request {
 	@Override
 	public void readData(DataInput input) throws IOException {
 		super.readData(input);
-		
+		byte[] bytes = new byte[input.readInt()];
+		input.readFully(bytes);
+		destinationId = new String(bytes);
+		message = new ServerMessageImpl();
+		message.readData(input);
 	}
 	
 	@Override
