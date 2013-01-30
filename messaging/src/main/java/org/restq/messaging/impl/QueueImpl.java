@@ -3,10 +3,10 @@
  */
 package org.restq.messaging.impl;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 
+import org.restq.core.DataInputWrapper;
+import org.restq.core.DataOutputWrapper;
 import org.restq.core.utility.PriorityQueue;
 import org.restq.core.utility.impl.PriorityQueueImpl;
 import org.restq.messaging.Queue;
@@ -35,6 +35,16 @@ public class QueueImpl extends DestinationImpl implements Queue {
 	public QueueImpl(String name, boolean durable) {
 		super(name);
 		this.durable = durable;
+	}
+	
+	/**
+	 * @param name
+	 * @param durable
+	 * @param priorityQueue
+	 */
+	public QueueImpl(String name, boolean durable, PriorityQueue<ServerMessage> priorityQueue) {
+		this(name, durable);
+		this.priorityQueue = priorityQueue;
 	}
 
 	@Override
@@ -71,14 +81,13 @@ public class QueueImpl extends DestinationImpl implements Queue {
 	}
 
 	@Override
-	public void readData(DataInput input) throws IOException {
+	public void readData(DataInputWrapper input) throws IOException {
 		super.readData(input);
 		durable = input.readBoolean();
-		
 	}
 	
 	@Override
-	public void writeData(DataOutput output) throws IOException {
+	public void writeData(DataOutputWrapper output) throws IOException {
 		super.writeData(output);
 		output.writeBoolean(durable);
 	}

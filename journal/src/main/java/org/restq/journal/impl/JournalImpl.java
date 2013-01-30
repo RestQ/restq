@@ -3,14 +3,14 @@
  */
 package org.restq.journal.impl;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.File;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.restq.core.DataInputWrapper;
+import org.restq.core.DataOutputWrapper;
 import org.restq.core.RestQException;
 import org.restq.journal.InternalRecord;
 import org.restq.journal.Journal;
@@ -238,7 +238,7 @@ public class JournalImpl implements Journal {
 	}
 	
 	@Override
-	public void readData(DataInput input) throws IOException {
+	public void readData(DataInputWrapper input) throws IOException {
 		int size = input.readInt();
 		for (int i = 0; i < size; i++) {
 			if (files.size() <= i) {
@@ -255,7 +255,7 @@ public class JournalImpl implements Journal {
 	}
 	
 	@Override
-	public void writeData(DataOutput output) throws IOException {
+	public void writeData(DataOutputWrapper output) throws IOException {
 		output.writeInt(files.size());
 		for (JournalFile file : files) {
 			file.writeData(output);

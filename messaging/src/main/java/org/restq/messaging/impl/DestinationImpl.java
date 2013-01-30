@@ -3,10 +3,10 @@
  */
 package org.restq.messaging.impl;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 
+import org.restq.core.DataInputWrapper;
+import org.restq.core.DataOutputWrapper;
 import org.restq.messaging.Destination;
 
 /**
@@ -50,22 +50,12 @@ public abstract class DestinationImpl implements Destination {
 	}
 
 	@Override
-	public void readData(DataInput input) throws IOException {
-		int length = input.readInt();
-		byte[] bytes = new byte[length];
-		input.readFully(bytes);
-		name = new String(bytes);
+	public void readData(DataInputWrapper input) throws IOException {
+		name = input.readString();
 	}
 	
 	@Override
-	public void writeData(DataOutput output) throws IOException {
-		int length = 0;
-		if (name != null) {
-			length = name.length();
-		}
-		output.writeInt(length);
-		if (name != null) {
-			output.write(name.getBytes());
-		}
+	public void writeData(DataOutputWrapper output) throws IOException {
+		output.writeString(name);
 	}
 }

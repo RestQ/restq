@@ -3,9 +3,9 @@
  */
 package org.restq.journal.service.impl;
 
-import java.io.DataInput;
 import java.io.IOException;
 
+import org.restq.core.DataInputWrapper;
 import org.restq.core.RestQException;
 import org.restq.journal.Journal;
 import org.restq.journal.repository.JournalRepository;
@@ -22,7 +22,7 @@ public class JournalServiceImpl implements JournalService {
 	private JournalRepository journalRepository;
 
 	@Override
-	public void importJournal(String journalDir, DataInput input) {
+	public void importJournal(String journalDir, DataInputWrapper input) {
 		Journal journal = journalRepository.getJournal(journalDir);
 		try {
 			journal.readData(input);

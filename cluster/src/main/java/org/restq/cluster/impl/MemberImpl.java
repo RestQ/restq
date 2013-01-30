@@ -3,8 +3,6 @@
  */
 package org.restq.cluster.impl;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.UnknownHostException;
@@ -14,6 +12,8 @@ import java.util.Set;
 
 import org.restq.cluster.Member;
 import org.restq.cluster.Partition;
+import org.restq.core.DataInputWrapper;
+import org.restq.core.DataOutputWrapper;
 
 /**
  * @author ganeshs
@@ -64,31 +64,25 @@ public class MemberImpl implements Member {
 	}
 	
 	@Override
-	public void readData(DataInput input) throws IOException {
-		byte[] bytes = new byte[input.readInt()];
-		input.readFully(bytes);
-		id = new String(bytes);
+	public void readData(DataInputWrapper input) throws IOException {
+		id = input.readString();
 		int partitionCount = input.readInt();
 		for (int i = 0; i < partitionCount; i++) {
 			Partition partition = new Partition();
 			partition.readData(input);
 			partitions.add(partition);
 		}
-		bytes = new byte[input.readInt()];
-		input.readFully(bytes);
-		address = new InetSocketAddress(new String(bytes), input.readInt());
+		address = new InetSocketAddress(input.readString(), input.readInt());
 	}
 	
 	@Override
-	public void writeData(DataOutput output) throws IOException {
-		output.writeInt(id.getBytes().length);
-		output.write(id.getBytes());
+	public void writeData(DataOutputWrapper output) throws IOException {
+		output.writeString(id);
 		output.writeInt(partitions.size());
 		for (Partition partition : partitions) {
 			partition.writeData(output);
 		}
-		output.writeInt(address.getHostName().getBytes().length);
-		output.write(address.getHostName().getBytes());
+		output.writeString(address.getHostName());
 		output.writeInt(address.getPort());
 	}
 

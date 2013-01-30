@@ -20,7 +20,7 @@ public interface Message extends Identifiable, DataSerializable {
 	
 	void addProperty(String name, String value);
 	
-	void getProperty(String name);
+	String getProperty(String name);
 	
 	int getPriority();
 }

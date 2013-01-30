@@ -3,13 +3,13 @@
  */
 package org.restq.cluster;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.restq.cluster.impl.MemberImpl;
+import org.restq.core.DataInputWrapper;
+import org.restq.core.DataOutputWrapper;
 import org.restq.core.Response;
 
 /**
@@ -62,7 +62,7 @@ public class JoinResponse extends Response {
 	}
 
 	@Override
-	public void writeData(DataOutput output) throws IOException {
+	public void writeData(DataOutputWrapper output) throws IOException {
 		super.writeData(output);
 		output.writeInt(members.size());
 		for (Member member : members) {
@@ -75,7 +75,7 @@ public class JoinResponse extends Response {
 	}
 
 	@Override
-	public void readData(DataInput input) throws IOException {
+	public void readData(DataInputWrapper input) throws IOException {
 		super.readData(input);
 		int memberSize = input.readInt();
 		for (int i=0; i < memberSize; i++) {

@@ -3,7 +3,11 @@
  */
 package org.restq.journal.impl;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
+import static org.testng.Assert.assertTrue;
 
 import java.io.File;
 import java.io.FileOutputStream;

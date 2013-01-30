@@ -3,10 +3,10 @@
  */
 package org.restq.cluster;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 
+import org.restq.core.DataInputWrapper;
+import org.restq.core.DataOutputWrapper;
 import org.restq.core.DataSerializable;
 
 /**
@@ -15,21 +15,13 @@ import org.restq.core.DataSerializable;
  */
 public abstract class Event implements DataSerializable {
 
-	/* (non-Javadoc)
-	 * @see org.restq.cluster.nio.DataSerializable#writeData(java.io.DataOutput)
-	 */
 	@Override
-	public void writeData(DataOutput output) throws IOException {
-		// TODO Auto-generated method stub
+	public void writeData(DataOutputWrapper output) throws IOException {
 
 	}
 
-	/* (non-Javadoc)
-	 * @see org.restq.cluster.nio.DataSerializable#readData(java.io.DataInput)
-	 */
 	@Override
-	public void readData(DataInput input) throws IOException {
-		// TODO Auto-generated method stub
+	public void readData(DataInputWrapper input) throws IOException {
 
 	}
 

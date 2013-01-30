@@ -5,9 +5,7 @@ package org.restq.core;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.DataInput;
 import java.io.DataInputStream;
-import java.io.DataOutput;
 import java.io.DataOutputStream;
 import java.io.IOException;
 
@@ -21,19 +19,19 @@ import org.springframework.stereotype.Service;
 @Service
 public class Serializer {
 	
-	public void serialize(DataOutput output, DataSerializable serializable) throws IOException {
+	public void serialize(DataOutputWrapper output, DataSerializable serializable) throws IOException {
 		output.writeUTF(serializable.getClass().getName());
 		serializable.writeData(output);
 	}
 	
 	public byte[] serialize(DataSerializable serializable) throws IOException {
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		DataOutput output = new DataOutputStream(os);
+		DataOutputWrapper output = new DataOutputWrapper(new DataOutputStream(os));
 		serialize(output, serializable);
 		return os.toByteArray();
 	}
 	
-	public DataSerializable deserialize(DataInput input) throws IOException {
+	public DataSerializable deserialize(DataInputWrapper input) throws IOException {
 		String className = input.readUTF();
 		DataSerializable serializable = getInstance(className);
 		serializable.readData(input);
@@ -41,7 +39,7 @@ public class Serializer {
 	}
 	
 	public DataSerializable deserialize(byte[] data) throws IOException {
-		DataInput input = new DataInputStream(new ByteArrayInputStream(data));
+		DataInputWrapper input = new DataInputWrapper(new DataInputStream(new ByteArrayInputStream(data)));
 		return deserialize(input);
 	}
 	

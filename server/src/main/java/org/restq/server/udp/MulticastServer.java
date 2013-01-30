@@ -15,6 +15,8 @@ import java.net.MulticastSocket;
 
 import org.apache.log4j.Logger;
 import org.restq.cluster.service.MulticastService;
+import org.restq.core.DataInputWrapper;
+import org.restq.core.DataOutputWrapper;
 import org.restq.core.DataSerializable;
 import org.restq.core.RestQComponent;
 import org.restq.core.RestQException;
@@ -130,7 +132,8 @@ public class MulticastServer implements Runnable, RestQComponent, MulticastServi
 		while(started) {
 			try {
 				socket.receive(recevicePacket);
-				DataSerializable data = serializer.deserialize(new DataInputStream(new ByteArrayInputStream(recevicePacket.getData())));
+				DataInputWrapper dataInput = new DataInputWrapper(new DataInputStream(new ByteArrayInputStream(recevicePacket.getData())));
+				DataSerializable data = serializer.deserialize(dataInput);
 				messageHandler.handle(data);
 			} catch (IOException e) {
 				logger.error("Failed while receving the data from multicast socket", e);
@@ -165,7 +168,7 @@ public class MulticastServer implements Runnable, RestQComponent, MulticastServi
 		}
 		try {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			serializer.serialize(new DataOutputStream(baos), serializable);
+			serializer.serialize(new DataOutputWrapper(new DataOutputStream(baos)), serializable);
 			sendPacket.setData(baos.toByteArray());
 			socket.send(sendPacket);
 		} catch (IOException e) {

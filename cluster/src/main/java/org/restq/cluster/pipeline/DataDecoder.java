@@ -3,13 +3,12 @@
  */
 package org.restq.cluster.pipeline;
 
-import java.io.DataInput;
-
 import org.jboss.netty.buffer.ChannelBuffer;
 import org.jboss.netty.buffer.ChannelBufferInputStream;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.handler.codec.oneone.OneToOneDecoder;
+import org.restq.core.DataInputWrapper;
 import org.restq.core.Serializer;
 
 /**
@@ -31,7 +30,7 @@ public class DataDecoder extends OneToOneDecoder {
 	@Override
 	protected Object decode(ChannelHandlerContext ctx, Channel channel, Object msg) throws Exception {
 		ChannelBuffer buffer = (ChannelBuffer) msg;
-		DataInput dataInput = new ChannelBufferInputStream(buffer);
+		DataInputWrapper dataInput = new DataInputWrapper(new ChannelBufferInputStream(buffer));
 		return serializer.deserialize(dataInput);
 	}
 }

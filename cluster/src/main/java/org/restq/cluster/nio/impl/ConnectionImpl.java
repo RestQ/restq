@@ -3,7 +3,6 @@
  */
 package org.restq.cluster.nio.impl;
 
-import java.io.DataOutput;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.concurrent.Executors;
@@ -26,6 +25,7 @@ import org.restq.cluster.nio.Connection;
 import org.restq.cluster.nio.ResponseFuture;
 import org.restq.cluster.pipeline.DataDecoder;
 import org.restq.cluster.pipeline.ResponseHandler;
+import org.restq.core.DataOutputWrapper;
 import org.restq.core.Request;
 import org.restq.core.RestQException;
 import org.restq.core.Serializer;
@@ -142,7 +142,7 @@ public class ConnectionImpl implements Connection {
 			throw new RestQException("Connection is not open");
 		}
 		DynamicChannelBuffer buffer = new DynamicChannelBuffer(10);
-		DataOutput output = new ChannelBufferOutputStream(buffer);
+		DataOutputWrapper output = new DataOutputWrapper(new ChannelBufferOutputStream(buffer));
 		ResponseFutureImpl future = new ResponseFutureImpl();
 		try {
 			serializer.serialize(output, request);
@@ -160,7 +160,7 @@ public class ConnectionImpl implements Connection {
 		ConnectionImpl connection = new ConnectionImpl(new InetSocketAddress(3000), new Serializer());
 		connection.open();
 		DynamicChannelBuffer buffer = new DynamicChannelBuffer(10);
-		DataOutput output = new ChannelBufferOutputStream(buffer);
+		DataOutputWrapper output = new DataOutputWrapper(new ChannelBufferOutputStream(buffer));
 		new Serializer().serialize(output, new MemberImpl("test123", 8080));
 		connection.channel.write(buffer);
 		Thread.sleep(1000);

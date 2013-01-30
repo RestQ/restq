@@ -3,8 +3,7 @@
  */
 package org.restq.journal.service;
 
-import java.io.DataInput;
-
+import org.restq.core.DataInputWrapper;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,5 +13,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface JournalService {
 
-	void importJournal(String journalDir, DataInput input);
+	void importJournal(String journalDir, DataInputWrapper input);
 }

@@ -3,7 +3,6 @@
  */
 package org.restq.cluster.pipeline;
 
-import java.io.DataOutput;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -14,10 +13,11 @@ import org.jboss.netty.channel.ExceptionEvent;
 import org.jboss.netty.channel.MessageEvent;
 import org.jboss.netty.channel.SimpleChannelUpstreamHandler;
 import org.restq.cluster.RequestMapper;
+import org.restq.core.DataOutputWrapper;
 import org.restq.core.Request;
 import org.restq.core.Response;
-import org.restq.core.Serializer;
 import org.restq.core.Response.Status;
+import org.restq.core.Serializer;
 
 /**
  * @author ganeshs
@@ -67,7 +67,7 @@ public class RequestHandler extends SimpleChannelUpstreamHandler {
 			invokePostProcessors(messageContext);
 			
 			DynamicChannelBuffer buffer = new DynamicChannelBuffer(10);
-			DataOutput output = new ChannelBufferOutputStream(buffer);
+			DataOutputWrapper output = new DataOutputWrapper(new ChannelBufferOutputStream(buffer));
 			serializer.serialize(output, response);
 			context.getChannel().write(buffer);
 			notifySuccess(messageContext);

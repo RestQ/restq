@@ -19,8 +19,6 @@ import static org.testng.Assert.assertNotNull;
 import static org.testng.Assert.assertNull;
 import static org.testng.Assert.assertTrue;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.MulticastSocket;
@@ -30,6 +28,8 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.restq.cluster.Member;
 import org.restq.cluster.impl.MemberImpl;
+import org.restq.core.DataInputWrapper;
+import org.restq.core.DataOutputWrapper;
 import org.restq.core.Serializer;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -107,7 +107,7 @@ public class MulticastServerTest {
 		doReturn(socket).when(multicastService).createMulticastSocket();
 		multicastService.init();
 		Member member = new MemberImpl();
-		when(serializer.deserialize(any(DataInput.class))).thenReturn(member);
+		when(serializer.deserialize(any(DataInputWrapper.class))).thenReturn(member);
 		final AtomicInteger i = new AtomicInteger();
 		doAnswer(new Answer<Void>() {
 			@Override
@@ -120,7 +120,7 @@ public class MulticastServerTest {
 			}
 		}).when(socket).receive(any(DatagramPacket.class));
 		multicastService.run();
-		verify(serializer, times(3)).deserialize(any(DataInput.class));
+		verify(serializer, times(3)).deserialize(any(DataInputWrapper.class));
 		verify(socket, times(3)).receive(any(DatagramPacket.class));
 		verify(handler, times(3)).handle(member);
 	}
@@ -154,7 +154,7 @@ public class MulticastServerTest {
 		}
 		Member member = mock(Member.class);
 		multicastService.send(member);
-		verify(serializer).serialize(any(DataOutput.class), eq(member));
+		verify(serializer).serialize(any(DataOutputWrapper.class), eq(member));
 		verify(socket).send(any(DatagramPacket.class));
 	}
 	

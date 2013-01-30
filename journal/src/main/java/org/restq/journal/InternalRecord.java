@@ -3,10 +3,10 @@
  */
 package org.restq.journal;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 
+import org.restq.core.DataInputWrapper;
+import org.restq.core.DataOutputWrapper;
 import org.restq.core.DataSerializable;
 
 /**
@@ -60,14 +60,14 @@ public class InternalRecord implements DataSerializable {
 	}
 	
 	@Override
-	public void readData(DataInput input) throws IOException {
+	public void readData(DataInputWrapper input) throws IOException {
 		marker = input.readByte();
 		record = new Record();
 		record.readData(input);
 	}
 	
 	@Override
-	public void writeData(DataOutput output) throws IOException {
+	public void writeData(DataOutputWrapper output) throws IOException {
 		output.writeByte(marker);
 		record.writeData(output);
 	}

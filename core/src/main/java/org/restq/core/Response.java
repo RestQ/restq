@@ -3,8 +3,6 @@
  */
 package org.restq.core;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 
 
@@ -43,23 +41,15 @@ public class Response implements DataSerializable {
 	}
 	
 	@Override
-	public void writeData(DataOutput output) throws IOException {
+	public void writeData(DataOutputWrapper output) throws IOException {
 		output.writeInt(status.ordinal());
-		if (message != null) {
-			output.writeInt(message.getBytes().length);
-			output.write(message.getBytes());
-		} else {
-			output.writeInt(0);
-		}
-		
+		output.writeString(message);
 	}
 
 	@Override
-	public void readData(DataInput input) throws IOException {
+	public void readData(DataInputWrapper input) throws IOException {
 		setStatus(Status.values()[input.readInt()]);
-		byte[] bytes = new byte[input.readInt()];
-		input.readFully(bytes);
-		setMessage(new String(bytes));
+		setMessage(input.readString());
 	}
 
 	/**

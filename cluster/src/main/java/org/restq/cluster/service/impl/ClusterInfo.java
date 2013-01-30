@@ -3,12 +3,12 @@
  */
 package org.restq.cluster.service.impl;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 
 import org.restq.cluster.Member;
 import org.restq.cluster.impl.MemberImpl;
+import org.restq.core.DataInputWrapper;
+import org.restq.core.DataOutputWrapper;
 import org.restq.core.DataSerializable;
 
 /**
@@ -80,7 +80,7 @@ public class ClusterInfo implements DataSerializable {
 	}
 
 	@Override
-	public void readData(DataInput input) throws IOException {
+	public void readData(DataInputWrapper input) throws IOException {
 		request = input.readBoolean();
 		member =  new MemberImpl();
 		member.readData(input);
@@ -88,7 +88,7 @@ public class ClusterInfo implements DataSerializable {
 	}
 	
 	@Override
-	public void writeData(DataOutput output) throws IOException {
+	public void writeData(DataOutputWrapper output) throws IOException {
 		output.writeBoolean(request);
 		member.writeData(output);
 		output.writeInt(totalMembers);

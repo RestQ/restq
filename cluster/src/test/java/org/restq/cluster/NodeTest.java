@@ -60,6 +60,10 @@ public class NodeTest {
 	@Test
 	public void shouldBindSocket() {
 		node.bind();
+		try {
+			Thread.sleep(500);
+		} catch (Exception e) {
+		}
 		verify(node).bindSocket();
 	}
 	

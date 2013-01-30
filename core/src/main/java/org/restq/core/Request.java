@@ -3,8 +3,6 @@
  */
 package org.restq.core;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 
 
@@ -15,12 +13,12 @@ import java.io.IOException;
 public abstract class Request implements DataSerializable {
 
 	@Override
-	public void writeData(DataOutput output) throws IOException {
+	public void writeData(DataOutputWrapper output) throws IOException {
 		
 	}
 
 	@Override
-	public void readData(DataInput input) throws IOException {
+	public void readData(DataInputWrapper input) throws IOException {
 		
 	}
 

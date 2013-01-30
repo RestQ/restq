@@ -3,11 +3,10 @@
  */
 package org.restq.messaging.impl;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
-import java.io.Serializable;
 
+import org.restq.core.DataInputWrapper;
+import org.restq.core.DataOutputWrapper;
 import org.restq.messaging.ServerMessage;
 
 /**
@@ -23,17 +22,17 @@ public class ServerMessageImpl extends MessageImpl implements ServerMessage {
 	 * @param id
 	 * @param body
 	 */
-	public ServerMessageImpl(Serializable id, byte[] body) {
+	public ServerMessageImpl(String id, byte[] body) {
 		super(id, body);
 	}
 
 	@Override
-	public void readData(DataInput input) throws IOException {
+	public void readData(DataInputWrapper input) throws IOException {
 		super.readData(input);
 	}
 	
 	@Override
-	public void writeData(DataOutput output) throws IOException {
+	public void writeData(DataOutputWrapper output) throws IOException {
 		super.writeData(output);
 	}
 }

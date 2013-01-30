@@ -3,10 +3,10 @@
  */
 package org.restq.journal;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 
+import org.restq.core.DataInputWrapper;
+import org.restq.core.DataOutputWrapper;
 import org.restq.core.Request;
 import org.restq.core.RestQException;
 
@@ -20,7 +20,7 @@ public class ImportJournalRequest extends Request {
 		destinations
 	}
 
-	private DataInput input;
+	private DataInputWrapper input;
 	
 	private String journalId;
 	
@@ -72,35 +72,32 @@ public class ImportJournalRequest extends Request {
 	}
 	
 	@Override
-	public void readData(DataInput input) throws IOException {
+	public void readData(DataInputWrapper input) throws IOException {
 		this.input = input;
 		super.readData(input);
 		type = Type.values()[input.readInt()];
-		byte[] bytes = new byte[input.readInt()];
-		input.readFully(bytes);
-		journalId = new String(bytes);
+		journalId = input.readString();
 	}
 	
 	@Override
-	public void writeData(DataOutput output) throws IOException {
+	public void writeData(DataOutputWrapper output) throws IOException {
 		super.writeData(output);
 		output.writeInt(type.ordinal());
-		output.writeInt(journal.getId().length());
-		output.write(journal.getId().getBytes());
+		output.writeString(journalId);
 		journal.writeData(output);
 	}
 
 	/**
 	 * @return the input
 	 */
-	public DataInput getInput() {
+	public DataInputWrapper getInput() {
 		return input;
 	}
 
 	/**
 	 * @param input the input to set
 	 */
-	public void setInput(DataInput input) {
+	public void setInput(DataInputWrapper input) {
 		this.input = input;
 	}
 

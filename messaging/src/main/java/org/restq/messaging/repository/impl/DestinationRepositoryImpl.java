@@ -34,40 +34,27 @@ public class DestinationRepositoryImpl implements DestinationRepository, Journal
 	@Autowired
 	private Serializer serializer;
 	
+	public DestinationRepositoryImpl() {
+	}
+	
+	public DestinationRepositoryImpl(JournalRepository journalRepository, Serializer serializer) {
+		this.journalRepository = journalRepository;
+		this.serializer = serializer;
+	}
+	
 	public void init() {
 		Journal journal = journalRepository.getDestinationsJournal();
 		journal.addListener(this);
 		refresh();
 	}
 	
-	public void refresh() {
+	protected void refresh(JournalReaderCallback callback) {
 		Journal journal = journalRepository.getDestinationsJournal();
-		journal.readRecords(new JournalReaderCallback() {
-			
-			@Override
-			public void readUpdateRecord(Record record) {
-				Destination destination = getDestination(record);
-				if (destination != null) {
-					destinations.put(destination.getName(), destination);
-				}
-			}
-			
-			@Override
-			public void readDeleteRecord(Record record) {
-				Destination destination = getDestination(record);
-				if (destination != null) {
-					destinations.remove(destination.getName());
-				}
-			}
-			
-			@Override
-			public void readAddRecord(Record record) {
-				Destination destination = getDestination(record);
-				if (destination != null) {
-					destinations.put(destination.getName(), destination);
-				}
-			}
-		});
+		journal.readRecords(callback);
+	}
+	
+	public void refresh() {
+		refresh(new DestinationJournalReader());
 	}
 	
 	protected Destination getDestination(Record record) {
@@ -128,5 +115,32 @@ public class DestinationRepositoryImpl implements DestinationRepository, Journal
 	@Override
 	public void journalUpdated(Journal journal) {
 		refresh();
+	}
+	
+	public class DestinationJournalReader implements JournalReaderCallback {
+		
+		@Override
+		public void readUpdateRecord(Record record) {
+			Destination destination = getDestination(record);
+			if (destination != null) {
+				destinations.put(destination.getName(), destination);
+			}
+		}
+		
+		@Override
+		public void readDeleteRecord(Record record) {
+			Destination destination = getDestination(record);
+			if (destination != null) {
+				destinations.remove(destination.getName());
+			}
+		}
+		
+		@Override
+		public void readAddRecord(Record record) {
+			Destination destination = getDestination(record);
+			if (destination != null) {
+				destinations.put(destination.getName(), destination);
+			}
+		}
 	}
 }

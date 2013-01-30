@@ -3,13 +3,12 @@
  */
 package org.restq.messaging.impl;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.restq.core.DataInputWrapper;
+import org.restq.core.DataOutputWrapper;
 import org.restq.messaging.Message;
 
 /**
@@ -18,7 +17,7 @@ import org.restq.messaging.Message;
  */
 public class MessageImpl implements Message {
 	
-	private Serializable id;
+	private String id;
 	
 	private byte[] body;
 	
@@ -36,9 +35,19 @@ public class MessageImpl implements Message {
 	 * @param id
 	 * @param body
 	 */
-	public MessageImpl(Serializable id, byte[] body) {
+	public MessageImpl(String id, byte[] body) {
 		this.id = id;
 		this.body = body;
+	}
+	
+	/**
+	 * @param id
+	 * @param body
+	 */
+	public MessageImpl(String id, byte[] body, Map<String, String> properties) {
+		this.id = id;
+		this.body = body;
+		this.properties = properties;
 	}
 
 	@Override
@@ -47,21 +56,21 @@ public class MessageImpl implements Message {
 	}
 
 	@Override
-	public void getProperty(String name) {
-		properties.get(name);
+	public String getProperty(String name) {
+		return properties.get(name);
 	}
 
 	/**
 	 * @return the id
 	 */
-	public Serializable getId() {
+	public String getId() {
 		return id;
 	}
 
 	/**
 	 * @param id the id to set
 	 */
-	public void setId(Serializable id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 
@@ -108,15 +117,16 @@ public class MessageImpl implements Message {
 	}
 
 	@Override
-	public void readData(DataInput input) throws IOException {
-		int length = input.readInt();
-		body = new byte[length];
-		input.readFully(body);
+	public void readData(DataInputWrapper input) throws IOException {
+		id = input.readString();
+		body = input.read();
+		properties = input.readMap();
 	}
 	
 	@Override
-	public void writeData(DataOutput output) throws IOException {
-		output.writeInt(body.length);
+	public void writeData(DataOutputWrapper output) throws IOException {
+		output.writeString(id);
 		output.write(body);
+		output.writeMap(properties);
 	}
 }

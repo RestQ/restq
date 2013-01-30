@@ -8,22 +8,20 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.testng.Assert.assertFalse;
 import static org.testng.Assert.assertTrue;
 
-import java.io.DataOutput;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
-import org.jboss.netty.bootstrap.ClientBootstrap;
 import org.jboss.netty.channel.Channel;
 import org.jboss.netty.channel.ChannelFuture;
 import org.jboss.netty.channel.ChannelHandlerContext;
 import org.jboss.netty.channel.ChannelPipeline;
 import org.restq.cluster.pipeline.ResponseHandler;
+import org.restq.core.DataOutputWrapper;
 import org.restq.core.Request;
 import org.restq.core.RestQException;
 import org.restq.core.Serializer;
@@ -83,7 +81,7 @@ public class ConnectionImplTest {
 		Request request = mock(Request.class);
 		when(channel.write(any())).thenReturn(mock(ChannelFuture.class));
 		connectionImpl.send(request);
-		verify(serializer).serialize(any(DataOutput.class), eq(request));
+		verify(serializer).serialize(any(DataOutputWrapper.class), eq(request));
 	}
 	
 	private void openConnection(ChannelFuture future, Channel channel) throws InterruptedException {

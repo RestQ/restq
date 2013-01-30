@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.RandomAccessFile;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.restq.core.DataInputWrapper;
+import org.restq.core.DataOutputWrapper;
 import org.restq.core.RestQException;
 import org.restq.journal.InternalRecord;
 import org.restq.journal.JournalFile;
@@ -84,7 +86,7 @@ public class JournalFileImpl implements JournalFile {
 			file.seek(readPos.get());
 			if (file.getFilePointer() < getSize()) {
 				record = new InternalRecord();
-				record.readData(file);
+				record.readData(new DataInputWrapper(file));
 			}
 			readPos.set(file.getFilePointer());
 		} catch(IOException e) {
@@ -100,7 +102,7 @@ public class JournalFileImpl implements JournalFile {
 				full = true;
 				return false;
 			}
-			record.writeData(file);
+			record.writeData(new DataOutputWrapper(file));
 			file.getFD().sync();
 			return true;
 		} catch (IOException e) {
@@ -121,20 +123,20 @@ public class JournalFileImpl implements JournalFile {
 	}
 	
 	@Override
-	public void readData(DataInput input) throws IOException {
+	public void readData(DataInputWrapper input) throws IOException {
 		file.setLength(0);
 		writeHeader();
 		resetReadPosition();
 		long size = input.readLong();
-		copyBytes(size, input, file);
+		copyBytes(size, input.getDataInput(), file);
 	}
 
 	@Override
-	public void writeData(DataOutput output) throws IOException {
+	public void writeData(DataOutputWrapper output) throws IOException {
 		long size = getSize() - HEADER_SIZE;
 		output.writeLong(size);
 		file.seek(HEADER_SIZE);
-		copyBytes(size, file, output);
+		copyBytes(size, file, output.getDataOutput());
 	}
 	
 	private void copyBytes(long size, DataInput input, DataOutput output) throws IOException {

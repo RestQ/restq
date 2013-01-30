@@ -3,11 +3,11 @@
  */
 package org.restq.journal;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 import java.util.Arrays;
 
+import org.restq.core.DataInputWrapper;
+import org.restq.core.DataOutputWrapper;
 import org.restq.core.DataSerializable;
 
 /**
@@ -79,26 +79,17 @@ public class Record implements DataSerializable {
 	}
 	
 	@Override
-	public void readData(DataInput input) throws IOException {
+	public void readData(DataInputWrapper input) throws IOException {
 		id = input.readLong();
 		type = input.readByte();
-		int length = input.readInt();
-		if (length > 0) {
-			data = new byte[length];
-			input.readFully(data);
-		}
+		data = input.read();
 	}
 	
 	@Override
-	public void writeData(DataOutput output) throws IOException {
+	public void writeData(DataOutputWrapper output) throws IOException {
 		output.writeLong(id);
 		output.writeByte(type);
-		if (data == null) {
-			output.writeInt(0);
-		} else {
-			output.writeInt(data.length);
-			output.write(data);
-		}
+		output.write(data);
 	}
 	
 	public long size() {

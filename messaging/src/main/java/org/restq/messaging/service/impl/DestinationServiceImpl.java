@@ -18,6 +18,13 @@ public class DestinationServiceImpl implements DestinationService {
 	
 	@Autowired
 	private DestinationRepository destinationRepository;
+	
+	public DestinationServiceImpl() {
+	}
+	
+	public DestinationServiceImpl(DestinationRepository repository) {
+		this.destinationRepository = repository;
+	}
 
 	@Override
 	public void createQueue(Queue queue) {

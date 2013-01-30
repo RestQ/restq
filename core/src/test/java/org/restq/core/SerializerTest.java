@@ -10,8 +10,6 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 
 import org.testng.annotations.BeforeMethod;
@@ -24,16 +22,16 @@ import org.testng.annotations.Test;
  */
 public class SerializerTest {
 	
-	private DataOutput dataOutput;
+	private DataOutputWrapper dataOutput;
 	
-	private DataInput dataInput;
+	private DataInputWrapper dataInput;
 	
 	private Serializer serializer;
 
 	@BeforeMethod
 	public void setup() {
-		dataOutput = mock(DataOutput.class);
-		dataInput = mock(DataInput.class);
+		dataOutput = mock(DataOutputWrapper.class);
+		dataInput = mock(DataInputWrapper.class);
 		serializer = spy(new Serializer());
 	}
 	

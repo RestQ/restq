@@ -14,7 +14,6 @@ import com.strategicgains.restexpress.Response;
 import com.strategicgains.restexpress.RestExpress;
 import com.strategicgains.restexpress.exception.ConflictException;
 import com.strategicgains.restexpress.exception.NotFoundException;
-import com.strategicgains.restexpress.exception.ServiceException;
 import com.strategicgains.restexpress.pipeline.MessageObserver;
 import com.strategicgains.restexpress.plugin.AbstractPlugin;
 

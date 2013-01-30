@@ -12,6 +12,13 @@ import org.restq.messaging.Topic;
  */
 public class TopicImpl extends DestinationImpl implements Topic {
 
+	public TopicImpl() {
+	}
+
+	public TopicImpl(String name) {
+		super(name);
+	}
+
 	@Override
 	public void addMessage(ServerMessage message) {
 		

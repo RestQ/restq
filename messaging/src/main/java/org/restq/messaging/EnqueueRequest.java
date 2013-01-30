@@ -3,10 +3,10 @@
  */
 package org.restq.messaging;
 
-import java.io.DataInput;
-import java.io.DataOutput;
 import java.io.IOException;
 
+import org.restq.core.DataInputWrapper;
+import org.restq.core.DataOutputWrapper;
 import org.restq.core.Request;
 import org.restq.messaging.impl.ServerMessageImpl;
 
@@ -61,20 +61,21 @@ public class EnqueueRequest extends Request {
 	}
 	
 	@Override
-	public void readData(DataInput input) throws IOException {
+	public void readData(DataInputWrapper input) throws IOException {
 		super.readData(input);
-		byte[] bytes = new byte[input.readInt()];
-		input.readFully(bytes);
-		destinationId = new String(bytes);
-		message = new ServerMessageImpl();
+		destinationId = input.readString();
+		message = createServerMessage();
 		message.readData(input);
 	}
 	
 	@Override
-	public void writeData(DataOutput output) throws IOException {
+	public void writeData(DataOutputWrapper output) throws IOException {
 		super.writeData(output);
-		output.writeInt(destinationId.length());
-		output.write(destinationId.getBytes());
+		output.writeString(destinationId);
 		message.writeData(output);
+	}
+	
+	protected ServerMessage createServerMessage() {
+		return new ServerMessageImpl();
 	}
 }
