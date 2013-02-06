@@ -3,8 +3,10 @@
  */
 package org.restq.core;
 
+import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -44,17 +46,6 @@ public class DataOutputWrapper {
 	public void write(byte[] b) throws IOException {
 		dataOutput.writeInt(b.length);
 		dataOutput.write(b);
-	}
-
-	/**
-	 * @param b
-	 * @param off
-	 * @param len
-	 * @throws IOException
-	 * @see java.io.DataOutput#write(byte[], int, int)
-	 */
-	public void write(byte[] b, int off, int len) throws IOException {
-		dataOutput.write(b, off, len);
 	}
 
 	/**
@@ -132,24 +123,6 @@ public class DataOutputWrapper {
 	/**
 	 * @param s
 	 * @throws IOException
-	 * @see java.io.DataOutput#writeBytes(java.lang.String)
-	 */
-	public void writeBytes(String s) throws IOException {
-		dataOutput.writeBytes(s);
-	}
-
-	/**
-	 * @param s
-	 * @throws IOException
-	 * @see java.io.DataOutput#writeChars(java.lang.String)
-	 */
-	public void writeChars(String s) throws IOException {
-		dataOutput.writeChars(s);
-	}
-
-	/**
-	 * @param s
-	 * @throws IOException
 	 * @see java.io.DataOutput#writeUTF(java.lang.String)
 	 */
 	public void writeUTF(String s) throws IOException {
@@ -172,4 +145,12 @@ public class DataOutputWrapper {
 			writeString(entry.getValue());
 		}
 	}
+	
+	public <T extends DataSerializable> void writeList(List<T> list) throws IOException {
+		dataOutput.writeInt(list.size());
+		for (DataSerializable serializable : list) {
+			serializable.writeData(this);
+		}
+	}
+	
 }

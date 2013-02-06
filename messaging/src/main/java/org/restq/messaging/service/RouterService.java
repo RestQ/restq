@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.restq.server.router.service;
+package org.restq.messaging.service;
 
 import org.restq.messaging.Destination;
 import org.restq.messaging.ServerMessage;

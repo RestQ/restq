@@ -9,7 +9,7 @@ import org.restq.messaging.Destination;
 import org.restq.messaging.ServerMessage;
 import org.restq.messaging.impl.ServerMessageImpl;
 import org.restq.messaging.repository.DestinationRepository;
-import org.restq.server.router.service.RouterService;
+import org.restq.messaging.service.RouterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 

@@ -78,4 +78,36 @@ public class EnqueueRequest extends Request {
 	protected ServerMessage createServerMessage() {
 		return new ServerMessageImpl();
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((destinationId == null) ? 0 : destinationId.hashCode());
+		result = prime * result + ((message == null) ? 0 : message.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		EnqueueRequest other = (EnqueueRequest) obj;
+		if (destinationId == null) {
+			if (other.destinationId != null)
+				return false;
+		} else if (!destinationId.equals(other.destinationId))
+			return false;
+		if (message == null) {
+			if (other.message != null)
+				return false;
+		} else if (!message.equals(other.message))
+			return false;
+		return true;
+	}
 }

@@ -5,7 +5,9 @@ package org.restq.core;
 
 import java.io.DataInput;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -29,36 +31,6 @@ public class DataInputWrapper {
 	}
 
 	/**
-	 * @param b
-	 * @throws IOException
-	 * @see java.io.DataInput#readFully(byte[])
-	 */
-	public void readFully(byte[] b) throws IOException {
-		dataInput.readFully(b);
-	}
-
-	/**
-	 * @param b
-	 * @param off
-	 * @param len
-	 * @throws IOException
-	 * @see java.io.DataInput#readFully(byte[], int, int)
-	 */
-	public void readFully(byte[] b, int off, int len) throws IOException {
-		dataInput.readFully(b, off, len);
-	}
-
-	/**
-	 * @param n
-	 * @return
-	 * @throws IOException
-	 * @see java.io.DataInput#skipBytes(int)
-	 */
-	public int skipBytes(int n) throws IOException {
-		return dataInput.skipBytes(n);
-	}
-
-	/**
 	 * @return
 	 * @throws IOException
 	 * @see java.io.DataInput#readBoolean()
@@ -79,28 +51,10 @@ public class DataInputWrapper {
 	/**
 	 * @return
 	 * @throws IOException
-	 * @see java.io.DataInput#readUnsignedByte()
-	 */
-	public int readUnsignedByte() throws IOException {
-		return dataInput.readUnsignedByte();
-	}
-
-	/**
-	 * @return
-	 * @throws IOException
 	 * @see java.io.DataInput#readShort()
 	 */
 	public short readShort() throws IOException {
 		return dataInput.readShort();
-	}
-
-	/**
-	 * @return
-	 * @throws IOException
-	 * @see java.io.DataInput#readUnsignedShort()
-	 */
-	public int readUnsignedShort() throws IOException {
-		return dataInput.readUnsignedShort();
 	}
 
 	/**
@@ -151,15 +105,6 @@ public class DataInputWrapper {
 	/**
 	 * @return
 	 * @throws IOException
-	 * @see java.io.DataInput#readLine()
-	 */
-	public String readLine() throws IOException {
-		return dataInput.readLine();
-	}
-
-	/**
-	 * @return
-	 * @throws IOException
 	 * @see java.io.DataInput#readUTF()
 	 */
 	public String readUTF() throws IOException {
@@ -184,5 +129,25 @@ public class DataInputWrapper {
 			map.put(readString(), readString());
 		}
 		return map;
+	}
+	
+	public <T extends DataSerializable> List<T> readList(DataSerializableBuilder<T> builder) throws IOException {
+		List<T> list = new ArrayList<T>();
+		for (int i = 0; i < dataInput.readInt(); i++) {
+			T t = builder.newInstance();
+			t.readData(this);
+			list.add(t);
+		}
+		return list;
+	}
+	
+	/**
+	 * @author ganeshs
+	 *
+	 * @param <T>
+	 */
+	public static interface DataSerializableBuilder<T extends DataSerializable> {
+		
+		T newInstance();
 	}
 }

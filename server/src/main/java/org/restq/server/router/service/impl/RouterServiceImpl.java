@@ -15,7 +15,7 @@ import org.restq.messaging.Destination;
 import org.restq.messaging.EnqueueRequest;
 import org.restq.messaging.ServerMessage;
 import org.restq.messaging.service.MessageService;
-import org.restq.server.router.service.RouterService;
+import org.restq.messaging.service.RouterService;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -35,6 +35,24 @@ public class RouterServiceImpl implements RouterService {
 	
 	@Autowired
 	private ConnectionManager connectionManager;
+	
+	public RouterServiceImpl() {
+	}
+	
+	/**
+	 * @param messageService
+	 * @param node
+	 * @param partitionStrategy
+	 * @param connectionManager
+	 */
+	public RouterServiceImpl(MessageService messageService, Node node,
+			PartitionStrategy partitionStrategy,
+			ConnectionManager connectionManager) {
+		this.messageService = messageService;
+		this.node = node;
+		this.partitionStrategy = partitionStrategy;
+		this.connectionManager = connectionManager;
+	}
 
 	@Override
 	public void routeMessage(Destination destination, ServerMessage message) {
@@ -43,17 +61,20 @@ public class RouterServiceImpl implements RouterService {
 		if (member.equals(node.getMember())) {
 			messageService.sendMessage(destination, message);
 		} else {
-			EnqueueRequest request = new EnqueueRequest(destination.getName(), message);
-			Connection connection = connectionManager.getConnection(member);
-			ResponseFuture response = connection.send(request);
-			response.addListener(new ResponseFutureListener() {
-				@Override
-				public void completed(ResponseFuture future) {
-					// TODO Handle completed
-					System.out.println("Message successfully sent");
-				}
-			});
+			sendMessageToMember(destination, message, member);
 		}
 	}
 	
+	protected void sendMessageToMember(Destination destination, ServerMessage message, Member member) {
+		EnqueueRequest request = new EnqueueRequest(destination.getName(), message);
+		Connection connection = connectionManager.getConnection(member);
+		ResponseFuture response = connection.send(request);
+		response.addListener(new ResponseFutureListener() {
+			@Override
+			public void completed(ResponseFuture future) {
+				// TODO Handle completed
+				System.out.println("Message successfully sent");
+			}
+		});
+	}
 }
