@@ -4,9 +4,14 @@
 package org.restq.journal.impl;
 
 import java.io.DataInput;
+import java.io.DataInputStream;
 import java.io.DataOutput;
+import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.RandomAccessFile;
+import java.nio.ByteBuffer;
+import java.nio.channels.Channels;
+import java.nio.channels.FileChannel;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.restq.core.DataInputWrapper;
@@ -22,7 +27,7 @@ import org.restq.journal.Record;
  */
 public class JournalFileImpl implements JournalFile {
 	
-	private RandomAccessFile file;
+	private FileChannel channel;
 	
 	private AtomicLong readPos = new AtomicLong();
 	
@@ -40,14 +45,14 @@ public class JournalFileImpl implements JournalFile {
 			throw new RestQException("Max size should be greater than " + HEADER_SIZE);
 		}
 		try {
-			this.file = new RandomAccessFile(fileName, "rw");
+			this.channel = new RandomAccessFile(fileName, "rw").getChannel();
 			this.maxSize = maxSize;
 			if (getSize() == 0) {
 				writeHeader();
 			} else {
 				readHeader();
 			}
-			readPos.set(file.getFilePointer());
+			readPos.set(channel.position());
 		} catch (IOException e) {
 			throw new RestQException(e);
 		}
@@ -62,18 +67,21 @@ public class JournalFileImpl implements JournalFile {
 
 	protected void writeHeader() throws IOException {
 		// FIXME First 8 bytes are allocated for header. Populating some junk now.
-		file.writeLong(0L);
+		ByteBuffer buffer = ByteBuffer.allocate(8);
+		buffer.asLongBuffer().put(0L);
+		channel.write(buffer);
 	}
 	
 	protected void readHeader() throws IOException {
 		// FIXME First 8 bytes are allocated for header. Populating some junk now.
-		file.readLong();
+		ByteBuffer buffer = ByteBuffer.allocate(8);
+		channel.read(buffer);
 	}
 	
 	@Override
 	public long getSize() {
 		try {
-		return file.length();
+		return channel.size();
 		} catch (IOException e) {
 			throw new RestQException(e);
 		}
@@ -83,12 +91,12 @@ public class JournalFileImpl implements JournalFile {
 	public InternalRecord readRecord() {
 		InternalRecord record = null;
 		try {
-			file.seek(readPos.get());
-			if (file.getFilePointer() < getSize()) {
+			channel.position(readPos.get());
+			if (channel.position() < getSize()) {
 				record = new InternalRecord();
-				record.readData(new DataInputWrapper(file));
+				record.readData(new DataInputWrapper(new DataInputStream(Channels.newInputStream(channel))));
 			}
-			readPos.set(file.getFilePointer());
+			readPos.set(channel.position());
 		} catch(IOException e) {
 			throw new RestQException(e);
 		}
@@ -102,8 +110,8 @@ public class JournalFileImpl implements JournalFile {
 				full = true;
 				return false;
 			}
-			record.writeData(new DataOutputWrapper(file));
-			file.getFD().sync();
+			record.writeData(new DataOutputWrapper(new DataOutputStream(Channels.newOutputStream(channel))));
+			channel.force(false);
 			return true;
 		} catch (IOException e) {
 			throw new RestQException(e);
@@ -116,7 +124,7 @@ public class JournalFileImpl implements JournalFile {
 	
 	public void close() {
 		try {
-			file.close();
+			channel.close();
 		} catch (IOException e) {
 			throw new RestQException(e);
 		}
@@ -124,19 +132,19 @@ public class JournalFileImpl implements JournalFile {
 	
 	@Override
 	public void readData(DataInputWrapper input) throws IOException {
-		file.setLength(0);
+		channel.truncate(0);
 		writeHeader();
 		resetReadPosition();
 		long size = input.readLong();
-		copyBytes(size, input.getDataInput(), file);
+		copyBytes(size, input.getDataInput(), new DataOutputStream(Channels.newOutputStream(channel)));
 	}
 
 	@Override
 	public void writeData(DataOutputWrapper output) throws IOException {
 		long size = getSize() - HEADER_SIZE;
 		output.writeLong(size);
-		file.seek(HEADER_SIZE);
-		copyBytes(size, file, output.getDataOutput());
+		channel.position(HEADER_SIZE);
+		copyBytes(size, new DataInputStream(Channels.newInputStream(channel)), output.getDataOutput());
 	}
 	
 	private void copyBytes(long size, DataInput input, DataOutput output) throws IOException {

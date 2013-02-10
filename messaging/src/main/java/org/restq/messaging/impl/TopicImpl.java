@@ -24,8 +24,8 @@ public class TopicImpl extends DestinationImpl implements Topic {
 	public TopicImpl() {
 	}
 
-	public TopicImpl(String name) {
-		super(name);
+	public TopicImpl(String id, String name) {
+		super(id, name);
 	}
 
 	@Override

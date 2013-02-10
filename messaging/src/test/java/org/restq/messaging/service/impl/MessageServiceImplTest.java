@@ -18,6 +18,7 @@ import org.restq.messaging.Topic;
 import org.restq.messaging.impl.SubscriberImpl;
 import org.restq.messaging.impl.TopicImpl;
 import org.restq.messaging.repository.DestinationRepository;
+import org.restq.messaging.repository.MessageRepository;
 import org.restq.messaging.service.RouterService;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -34,11 +35,14 @@ public class MessageServiceImplTest {
 	
 	private MessageServiceImpl messageService;
 	
+	private MessageRepository messageRepository;
+	
 	@BeforeMethod
 	public void setup() {
 		this.destinationRepository = mock(DestinationRepository.class);
 		this.routerService = mock(RouterService.class);
-		this.messageService = new MessageServiceImpl(routerService, destinationRepository);
+		this.messageRepository = mock(MessageRepository.class);
+		this.messageService = new MessageServiceImpl(routerService, destinationRepository, messageRepository);
 	}
 
 	@Test
@@ -47,6 +51,7 @@ public class MessageServiceImplTest {
 		ServerMessage message = mock(ServerMessage.class);
 		messageService.sendMessage(destination, message);
 		verify(destination).addMessage(message);
+		verify(messageRepository).persist(destination, message);
 	}
 	
 	@Test

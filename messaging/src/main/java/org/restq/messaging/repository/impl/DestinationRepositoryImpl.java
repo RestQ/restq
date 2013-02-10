@@ -79,13 +79,13 @@ public class DestinationRepositoryImpl implements DestinationRepository, Journal
 	
 	@Override
 	public void delete(Destination destination) {
-		destinations.remove(destination.getName());
+		destinations.remove(destination.getId());
 		Record record = getRecord(destination);
 		journalRepository.getDestinationsJournal().appendDeleteRecord(record);
 	}
 	
 	protected void save(Destination destination, boolean update) {
-		destinations.put(destination.getName(), destination);
+		destinations.put(destination.getId(), destination);
 		Record record = getRecord(destination);
 		if (! update) {
 			journalRepository.getDestinationsJournal().appendAddRecord(record);
@@ -123,7 +123,7 @@ public class DestinationRepositoryImpl implements DestinationRepository, Journal
 		public void readUpdateRecord(Record record) {
 			Destination destination = getDestination(record);
 			if (destination != null) {
-				destinations.put(destination.getName(), destination);
+				destinations.put(destination.getId(), destination);
 			}
 		}
 		
@@ -131,7 +131,7 @@ public class DestinationRepositoryImpl implements DestinationRepository, Journal
 		public void readDeleteRecord(Record record) {
 			Destination destination = getDestination(record);
 			if (destination != null) {
-				destinations.remove(destination.getName());
+				destinations.remove(destination.getId());
 			}
 		}
 		
@@ -139,7 +139,7 @@ public class DestinationRepositoryImpl implements DestinationRepository, Journal
 		public void readAddRecord(Record record) {
 			Destination destination = getDestination(record);
 			if (destination != null) {
-				destinations.put(destination.getName(), destination);
+				destinations.put(destination.getId(), destination);
 			}
 		}
 	}

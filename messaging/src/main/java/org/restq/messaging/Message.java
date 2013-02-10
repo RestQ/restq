@@ -23,4 +23,8 @@ public interface Message extends Identifiable, DataSerializable {
 	String getProperty(String name);
 	
 	int getPriority();
+	
+	void setGroupId(String groupId);
+	
+	String getGroupId();
 }

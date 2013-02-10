@@ -25,6 +25,8 @@ public class MessageImpl implements Message {
 	
 	private Map<String, String> properties = new HashMap<String, String>();
 	
+	public static final String GROUP_ID = "groupId";
+	
 	/**
 	 * <p>Default constructor</p>
 	 */
@@ -114,6 +116,16 @@ public class MessageImpl implements Message {
 	 */
 	public void setProperties(Map<String, String> properties) {
 		this.properties = properties;
+	}
+	
+	@Override
+	public String getGroupId() {
+		return properties.get(GROUP_ID);
+	}
+	
+	@Override
+	public void setGroupId(String groupId) {
+		properties.put(GROUP_ID, groupId);
 	}
 
 	@Override

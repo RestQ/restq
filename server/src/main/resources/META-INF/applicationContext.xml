@@ -62,6 +62,8 @@
 	
 	<bean name="destinationRepository" class="org.restq.messaging.repository.impl.DestinationRepositoryImpl" init-method="init"/>
 	
+	<bean name="messageRepository" class="org.restq.server.repository.impl.ClusteredMessageRepository"/>
+	
 	<beans profile="test">
 		<context:property-placeholder location="restq.test.properties" order="0"/>
     </beans>

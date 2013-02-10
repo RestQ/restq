@@ -14,8 +14,12 @@ import org.springframework.stereotype.Repository;
 public interface JournalRepository {
 	
 	public static final byte DESTINATION = 1;
+	
+	public static final byte MESSAGE = 2;
 
 	Journal getDestinationsJournal();
+	
+	Journal getMessagesJournal(String parentDir, String destination);
 	
 	Journal getJournal(String id);
 }

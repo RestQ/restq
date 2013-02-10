@@ -28,16 +28,16 @@ public class DestinationServiceImpl implements DestinationService {
 
 	@Override
 	public void createQueue(Queue queue) {
-		if (destinationRepository.find(queue.getName()) != null) {
-			throw new ConflictException("Queue " + queue.getName() + " already exist");
+		if (destinationRepository.find(queue.getId()) != null) {
+			throw new ConflictException("Queue " + queue.getId() + " already exist");
 		}
 		destinationRepository.create(queue);
 	}
 
 	@Override
 	public void createTopic(Topic topic) {
-		if (destinationRepository.find(topic.getName()) != null) {
-			throw new ConflictException("Topic " + topic.getName() + " already exist");
+		if (destinationRepository.find(topic.getId()) != null) {
+			throw new ConflictException("Topic " + topic.getId() + " already exist");
 		}
 		destinationRepository.create(topic);
 	}

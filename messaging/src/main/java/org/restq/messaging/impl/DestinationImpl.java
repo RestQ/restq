@@ -17,6 +17,8 @@ public abstract class DestinationImpl implements Destination {
 	
 	private String name;
 	
+	private String id;
+	
 	/**
 	 * <p>Default Constructor</p>
 	 */
@@ -24,9 +26,11 @@ public abstract class DestinationImpl implements Destination {
 	}
 	
 	/**
+	 * @param id
 	 * @param name
 	 */
-	public DestinationImpl(String name) {
+	public DestinationImpl(String id, String name) {
+		this.id = id;
 		this.name = name;
 	}
 
@@ -36,12 +40,10 @@ public abstract class DestinationImpl implements Destination {
 	public String getName() {
 		return name;
 	}
-
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-		this.name = name;
+	
+	@Override
+	public String getId() {
+		return id;
 	}
 
 	@Override
@@ -51,11 +53,13 @@ public abstract class DestinationImpl implements Destination {
 
 	@Override
 	public void readData(DataInputWrapper input) throws IOException {
+		id = input.readString();
 		name = input.readString();
 	}
 	
 	@Override
 	public void writeData(DataOutputWrapper output) throws IOException {
+		output.writeString(id);
 		output.writeString(name);
 	}
 }

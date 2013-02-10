@@ -56,7 +56,7 @@ public class RouterServiceImpl implements RouterService {
 
 	@Override
 	public void routeMessage(Destination destination, ServerMessage message) {
-		Partition partition = partitionStrategy.getPartition(destination.getName());
+		Partition partition = partitionStrategy.getPartition(destination.getId(), message.getGroupId());
 		Member member = node.getCluster().getMember(partition);
 		if (member.equals(node.getMember())) {
 			messageService.sendMessage(destination, message);
@@ -66,14 +66,14 @@ public class RouterServiceImpl implements RouterService {
 	}
 	
 	protected void sendMessageToMember(Destination destination, ServerMessage message, Member member) {
-		EnqueueRequest request = new EnqueueRequest(destination.getName(), message);
+		EnqueueRequest request = new EnqueueRequest(destination.getId(), message);
 		Connection connection = connectionManager.getConnection(member);
 		ResponseFuture response = connection.send(request);
 		response.addListener(new ResponseFutureListener() {
 			@Override
 			public void completed(ResponseFuture future) {
 				// TODO Handle completed
-				System.out.println("Message successfully sent");
+//				System.out.println("Message successfully sent");
 			}
 		});
 	}

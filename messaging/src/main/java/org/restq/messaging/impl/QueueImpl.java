@@ -29,21 +29,23 @@ public class QueueImpl extends DestinationImpl implements Queue {
 	}
 	
 	/**
+	 * @param id
 	 * @param name
 	 * @param durable
 	 */
-	public QueueImpl(String name, boolean durable) {
-		super(name);
+	public QueueImpl(String id, String name, boolean durable) {
+		super(id, name);
 		this.durable = durable;
 	}
 	
 	/**
+	 * @param id
 	 * @param name
 	 * @param durable
 	 * @param priorityQueue
 	 */
-	public QueueImpl(String name, boolean durable, PriorityQueue<ServerMessage> priorityQueue) {
-		this(name, durable);
+	public QueueImpl(String id, String name, boolean durable, PriorityQueue<ServerMessage> priorityQueue) {
+		this(id, name, durable);
 		this.priorityQueue = priorityQueue;
 	}
 

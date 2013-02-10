@@ -87,7 +87,7 @@ public class RouterServiceImplTest {
 	@Test
 	public void shouldSendMessageToAnotherMember() {
 		Destination destination = mock(Destination.class);
-		when(destination.getName()).thenReturn("test123");
+		when(destination.getId()).thenReturn("test123");
 		ServerMessage message = mock(ServerMessage.class);
 		Connection connection = mock(Connection.class);
 		Request request = new EnqueueRequest("test123", message);

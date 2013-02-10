@@ -9,6 +9,7 @@ import org.restq.messaging.ServerMessage;
 import org.restq.messaging.Subscriber;
 import org.restq.messaging.Topic;
 import org.restq.messaging.repository.DestinationRepository;
+import org.restq.messaging.repository.MessageRepository;
 import org.restq.messaging.service.MessageService;
 import org.restq.messaging.service.RouterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,9 @@ public class MessageServiceImpl implements MessageService {
 	@Autowired
 	private DestinationRepository destinationRepository;
 	
+	@Autowired
+	private MessageRepository messageRepository;
+	
 	private static Logger logger = Logger.getLogger(MessageServiceImpl.class);
 	
 	public MessageServiceImpl() {
@@ -33,10 +37,12 @@ public class MessageServiceImpl implements MessageService {
 	/**
 	 * @param routerService
 	 * @param destinationRepository
+	 * @param messageRepository
 	 */
-	public MessageServiceImpl(RouterService routerService, DestinationRepository destinationRepository) {
+	public MessageServiceImpl(RouterService routerService, DestinationRepository destinationRepository, MessageRepository messageRepository) {
 		this.destinationRepository = destinationRepository;
 		this.routerService = routerService;
+		this.messageRepository = messageRepository;
 	}
 
 	@Override
@@ -47,6 +53,7 @@ public class MessageServiceImpl implements MessageService {
 			sendMessageToSubscribers(message, topic);
 		} else {
 			destination.addMessage(message);
+			messageRepository.persist(destination, message);
 		}
 	}
 	
