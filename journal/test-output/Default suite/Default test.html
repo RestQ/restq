@@ -55,11 +55,11 @@ function toggleAllBoxes() {
 <body>
 <h2 align='center'>Default test</h2><table border='1' align="center">
 <tr>
-<td>Tests passed/Failed/Skipped:</td><td>1/0/0</td>
+<td>Tests passed/Failed/Skipped:</td><td>9/0/0</td>
 </tr><tr>
-<td>Started on:</td><td>Thu Jan 24 23:13:57 IST 2013</td>
+<td>Started on:</td><td>Sun Feb 10 23:45:43 IST 2013</td>
 </tr>
-<tr><td>Total time:</td><td>0 seconds (477 ms)</td>
+<tr><td>Total time:</td><td>0 seconds (115 ms)</td>
 </tr><tr>
 <td>Included groups:</td><td></td>
 </tr><tr>
@@ -75,10 +75,172 @@ function toggleAllBoxes() {
 <td><b>Instance</b></td>
 </tr>
 <tr>
-<td title='org.restq.journal.impl.JournalImplTest.shouldReceiveCallBackOnReadRecords()'><b>shouldReceiveCallBackOnReadRecords</b><br>Test class: org.restq.journal.impl.JournalImplTest</td>
+<td title='org.restq.journal.impl.JournalFileImplTest.shouldAllocateHeaderSpaceForNewFiles()'><b>shouldAllocateHeaderSpaceForNewFiles</b><br>Test class: org.restq.journal.impl.JournalFileImplTest</td>
 <td></td>
 <td>0</td>
-<td>org.restq.journal.impl.JournalImplTest@71846ce0</td></tr>
+<td>org.restq.journal.impl.JournalFileImplTest@6c7d84ce</td></tr>
+<tr>
+<td title='org.restq.journal.impl.JournalFileImplTest.shouldNotWriteRecordWhenSizeIsFull()'><b>shouldNotWriteRecordWhenSizeIsFull</b><br>Test class: org.restq.journal.impl.JournalFileImplTest</td>
+<td></td>
+<td>0</td>
+<td>org.restq.journal.impl.JournalFileImplTest@6c7d84ce</td></tr>
+<tr>
+<td title='org.restq.journal.impl.JournalFileImplTest.shouldReadRecord()'><b>shouldReadRecord</b><br>Test class: org.restq.journal.impl.JournalFileImplTest</td>
+<td></td>
+<td>0</td>
+<td>org.restq.journal.impl.JournalFileImplTest@6c7d84ce</td></tr>
+<tr>
+<td title='org.restq.journal.impl.JournalFileImplTest.shouldReturnFullWhenSizeExceedsMaxSize()'><b>shouldReturnFullWhenSizeExceedsMaxSize</b><br>Test class: org.restq.journal.impl.JournalFileImplTest</td>
+<td></td>
+<td>0</td>
+<td>org.restq.journal.impl.JournalFileImplTest@6c7d84ce</td></tr>
+<tr>
+<td title='org.restq.journal.impl.JournalFileImplTest.shouldReturnNullWhenNothingToRead()'><b>shouldReturnNullWhenNothingToRead</b><br>Test class: org.restq.journal.impl.JournalFileImplTest</td>
+<td></td>
+<td>0</td>
+<td>org.restq.journal.impl.JournalFileImplTest@6c7d84ce</td></tr>
+<tr>
+<td title='org.restq.journal.impl.JournalFileImplTest.shouldReturnSizeOfFile()'><b>shouldReturnSizeOfFile</b><br>Test class: org.restq.journal.impl.JournalFileImplTest</td>
+<td></td>
+<td>0</td>
+<td>org.restq.journal.impl.JournalFileImplTest@6c7d84ce</td></tr>
+<tr>
+<td title='org.restq.journal.impl.JournalFileImplTest.shouldThrowExceptionWhenDirectoryIsNotFound()'><b>shouldThrowExceptionWhenDirectoryIsNotFound</b><br>Test class: org.restq.journal.impl.JournalFileImplTest</td>
+<td><div><pre>org.restq.core.RestQException: java.io.FileNotFoundException: ./test123/test (No such file or directory)
+	at org.restq.journal.impl.JournalFileImpl.&lt;init&gt;(JournalFileImpl.java:57)
+	at org.restq.journal.impl.JournalFileImplTest.shouldThrowExceptionWhenDirectoryIsNotFound(JournalFileImplTest.java:38)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:80)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:691)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:883)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1208)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:758)
+	at org.testng.TestRunner.run(TestRunner.java:613)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:87)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1141)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1066)
+	at org.testng.TestNG.run(TestNG.java:978)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:109)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:202)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:173)
+Caused by: java.io.FileNotFoundException: ./test123/test (No such file or directory)
+	at java.io.RandomAccessFile.open(Native Method)
+	at java.io.RandomAccessFile.&lt;init&gt;(RandomAccessFile.java:233)
+	at java.io.RandomAccessFile.&lt;init&gt;(RandomAccessFile.java:118)
+	at org.restq.journal.impl.JournalFileImpl.&lt;init&gt;(JournalFileImpl.java:48)
+	... 25 more
+</pre></div><a href='#' onClick='toggleBox("stack-trace1516826440", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1516826440'><pre>org.restq.core.RestQException: java.io.FileNotFoundException: ./test123/test (No such file or directory)
+	at org.restq.journal.impl.JournalFileImpl.&lt;init&gt;(JournalFileImpl.java:57)
+	at org.restq.journal.impl.JournalFileImplTest.shouldThrowExceptionWhenDirectoryIsNotFound(JournalFileImplTest.java:38)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:80)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:691)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:883)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1208)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:758)
+	at org.testng.TestRunner.run(TestRunner.java:613)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:87)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1141)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1066)
+	at org.testng.TestNG.run(TestNG.java:978)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:109)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:202)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:173)
+Caused by: java.io.FileNotFoundException: ./test123/test (No such file or directory)
+	at java.io.RandomAccessFile.open(Native Method)
+	at java.io.RandomAccessFile.&lt;init&gt;(RandomAccessFile.java:233)
+	at java.io.RandomAccessFile.&lt;init&gt;(RandomAccessFile.java:118)
+	at org.restq.journal.impl.JournalFileImpl.&lt;init&gt;(JournalFileImpl.java:48)
+	... 25 more
+</pre></div></td>
+<td>0</td>
+<td>org.restq.journal.impl.JournalFileImplTest@6c7d84ce</td></tr>
+<tr>
+<td title='org.restq.journal.impl.JournalFileImplTest.shouldThrowExceptionWhenMaxSizeIsLessThanHeaderSize()'><b>shouldThrowExceptionWhenMaxSizeIsLessThanHeaderSize</b><br>Test class: org.restq.journal.impl.JournalFileImplTest</td>
+<td><div><pre>org.restq.core.RestQException: Max size should be greater than 8
+	at org.restq.journal.impl.JournalFileImpl.&lt;init&gt;(JournalFileImpl.java:45)
+	at org.restq.journal.impl.JournalFileImplTest.shouldThrowExceptionWhenMaxSizeIsLessThanHeaderSize(JournalFileImplTest.java:43)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:80)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:691)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:883)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1208)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:758)
+	at org.testng.TestRunner.run(TestRunner.java:613)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:87)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1141)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1066)
+	at org.testng.TestNG.run(TestNG.java:978)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:109)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:202)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:173)
+</pre></div><a href='#' onClick='toggleBox("stack-trace1120022158", this, "Click to show all stack frames", "Click to hide stack frames")'>Click to show all stack frames</a>
+<div class='stack-trace' id='stack-trace1120022158'><pre>org.restq.core.RestQException: Max size should be greater than 8
+	at org.restq.journal.impl.JournalFileImpl.&lt;init&gt;(JournalFileImpl.java:45)
+	at org.restq.journal.impl.JournalFileImplTest.shouldThrowExceptionWhenMaxSizeIsLessThanHeaderSize(JournalFileImplTest.java:43)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:601)
+	at org.testng.internal.MethodInvocationHelper.invokeMethod(MethodInvocationHelper.java:80)
+	at org.testng.internal.Invoker.invokeMethod(Invoker.java:691)
+	at org.testng.internal.Invoker.invokeTestMethod(Invoker.java:883)
+	at org.testng.internal.Invoker.invokeTestMethods(Invoker.java:1208)
+	at org.testng.internal.TestMethodWorker.invokeTestMethods(TestMethodWorker.java:127)
+	at org.testng.internal.TestMethodWorker.run(TestMethodWorker.java:111)
+	at org.testng.TestRunner.privateRun(TestRunner.java:758)
+	at org.testng.TestRunner.run(TestRunner.java:613)
+	at org.testng.SuiteRunner.runTest(SuiteRunner.java:334)
+	at org.testng.SuiteRunner.runSequentially(SuiteRunner.java:329)
+	at org.testng.SuiteRunner.privateRun(SuiteRunner.java:291)
+	at org.testng.SuiteRunner.run(SuiteRunner.java:240)
+	at org.testng.SuiteRunnerWorker.runSuite(SuiteRunnerWorker.java:53)
+	at org.testng.SuiteRunnerWorker.run(SuiteRunnerWorker.java:87)
+	at org.testng.TestNG.runSuitesSequentially(TestNG.java:1141)
+	at org.testng.TestNG.runSuitesLocally(TestNG.java:1066)
+	at org.testng.TestNG.run(TestNG.java:978)
+	at org.testng.remote.RemoteTestNG.run(RemoteTestNG.java:109)
+	at org.testng.remote.RemoteTestNG.initAndRun(RemoteTestNG.java:202)
+	at org.testng.remote.RemoteTestNG.main(RemoteTestNG.java:173)
+</pre></div></td>
+<td>0</td>
+<td>org.restq.journal.impl.JournalFileImplTest@6c7d84ce</td></tr>
+<tr>
+<td title='org.restq.journal.impl.JournalFileImplTest.shouldWriteRecord()'><b>shouldWriteRecord</b><br>Test class: org.restq.journal.impl.JournalFileImplTest</td>
+<td></td>
+<td>0</td>
+<td>org.restq.journal.impl.JournalFileImplTest@6c7d84ce</td></tr>
 </table><p>
 </body>
 </html>

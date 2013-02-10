@@ -63,7 +63,7 @@ public class RouterServiceImplTest {
 		ServerMessage message = mock(ServerMessage.class);
 		Destination destination = mock(Destination.class);
 		Partition partition = new Partition(1);
-		when(partitionStrategy.getPartition((Serializable)any())).thenReturn(partition);
+		when(partitionStrategy.getPartition((Serializable)any(), (Serializable)any())).thenReturn(partition);
 		when(cluster.getMember(partition)).thenReturn(member);
 		routerService.routeMessage(destination, message);
 		verify(messageService).sendMessage(destination, message);
@@ -75,7 +75,7 @@ public class RouterServiceImplTest {
 		ServerMessage message = mock(ServerMessage.class);
 		Destination destination = mock(Destination.class);
 		Partition partition = new Partition(1);
-		when(partitionStrategy.getPartition((Serializable)any())).thenReturn(partition);
+		when(partitionStrategy.getPartition((Serializable)any(), (Serializable)any())).thenReturn(partition);
 		Member someOtherMember = mock(Member.class);
 		when(cluster.getMember(partition)).thenReturn(someOtherMember);
 		doNothing().when(routerService).sendMessageToMember(destination, message, someOtherMember);
